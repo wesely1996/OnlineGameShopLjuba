@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
-import CardHolder from '../CardHolder/CardHolder';
-import Scroll from '../Scroll/Scroll';
+import CardHolder from '../../components/CardHolder/CardHolder';
+import Scroll from '../../components/Scroll/Scroll';
 import {Games} from '../../props/Games.js';
 import './App.css';
 
@@ -12,9 +12,6 @@ class App extends Component {
 		this.state = {
 			games: [],
 			searchfield: '',
-		}
-		this.elements = {
-			heightOfScroll : '450px',
 		}
 	}
 
@@ -30,20 +27,34 @@ class App extends Component {
 	}
 
 	render(){
+		const {games, searchfield} = this.state;
 
-		const filteredGames = this.state.games.filter(games =>{
-			return games.gameName.toLowerCase().includes(this.state.searchfield.toLowerCase());
+		const filteredGames = games.filter(game =>{
+			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
 		})
 
-		return (
-		    <div className="App">
-		      <Navigation/>
-		      <Search searchChange={this.onSearchChange}/>
-		      <Scroll height = {this.elements}>
-		      	<CardHolder Games = {filteredGames}/>
-		      </Scroll>
-		    </div>
-		);
+		if(!games.length){
+			return (
+			    <div className="App">
+			      <Navigation/>
+			      <Search searchChange={this.onSearchChange}/>
+			      <h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
+			      	LOADING
+			      </h1>
+			    </div>
+			);
+		}
+		else{
+			return (
+			    <div className="App">
+			      <Navigation/>
+			      <Search searchChange={this.onSearchChange}/>
+			      <Scroll>
+			      	<CardHolder Games = {filteredGames}/>
+			      </Scroll>
+			    </div>
+			);
+		}
 	}
 }
 

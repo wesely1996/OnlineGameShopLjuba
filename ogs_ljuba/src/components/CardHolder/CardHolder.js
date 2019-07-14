@@ -1,5 +1,5 @@
 import React from 'react';
-import GameCard from '../../components/GameCard/GameCard';
+import GameCard from '../GameCard/GameCard';
 
 const CardHolder = ({Games}) => {
 	return (
