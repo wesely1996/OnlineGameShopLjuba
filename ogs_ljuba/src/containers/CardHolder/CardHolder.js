@@ -1,10 +1,9 @@
 import React from 'react';
 import GameCard from '../../components/GameCard/GameCard';
-import {Games} from '../../props/Games.js';
 
-const CardHolder = () => {
+const CardHolder = ({Games}) => {
 	return (
-		<div style={{display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap'}}>
+		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
 				Games.map((game, id) => {
 					return (<GameCard 
