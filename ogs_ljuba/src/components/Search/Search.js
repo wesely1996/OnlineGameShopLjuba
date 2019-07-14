@@ -4,7 +4,7 @@ const Search = ({searchfield, searchChange}) =>{
 	return (
 		<div className='br4 ma2'>
 			<input 
-			className='f4 pa1 w-70 h-5 ba bg-washed-blues center' 
+			className='f4 pa1 w-70 h-5 ba bg-washed-blues center hover-bg-black hover-white'
 			type='search' 
 			placeholder='search games'
 			onChange = {searchChange}/>

@@ -3,6 +3,8 @@ import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
 import CardHolder from '../../components/CardHolder/CardHolder';
 import Scroll from '../../components/Scroll/Scroll';
+import SignIn from '../../components/SignIn/SignIn';
+import Registration from '../../components/Registration/Registration';
 import {Games} from '../../props/Games.js';
 import './App.css';
 
