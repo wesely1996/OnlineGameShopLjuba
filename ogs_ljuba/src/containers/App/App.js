@@ -14,6 +14,8 @@ class App extends Component {
 		this.state = {
 			games: [],
 			searchfield: '',
+			route: 'main',
+			isSignedIn: false,
 		}
 	}
 
@@ -28,35 +30,52 @@ class App extends Component {
 		this.setState({searchfield: event.target.value});
 	}
 
+	onRouteChange = (route) => {
+		if(route === 'singout'){
+			this.setState({route: 'main', isSignedIn: false});
+		}
+		else{
+			this.setState({route: route});
+			if(route === 'main' && !this.state.isSignedIn){
+				this.setState({isSignedIn: true});
+			}
+		}
+	}
+
 	render(){
-		const {games, searchfield} = this.state;
+		const {games, searchfield, route, isSignedIn} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
 		})
 
-		if(!games.length){
-			return (
-			    <div className="App">
-			      <Navigation/>
-			      <Search searchChange={this.onSearchChange}/>
-			      <h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
-			      	LOADING
-			      </h1>
-			    </div>
-			);
-		}
-		else{
-			return (
-			    <div className="App">
-			      <Navigation/>
-			      <Search searchChange={this.onSearchChange}/>
-			      <Scroll>
-			      	<CardHolder Games = {filteredGames}/>
-			      </Scroll>
-			    </div>
-			);
-		}
+		return (
+			<div className="App">
+		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+		      {
+			    route === 'register' ?
+			    <Registration onRouteChange = {this.onRouteChange}/> :
+			    route === 'signin' ?
+			    <SignIn onRouteChange = {this.onRouteChange}/> :
+			    route === 'main' ?
+			    <div>
+			    	<Search searchChange={this.onSearchChange}/>
+			    	{
+			    		!games.length ?
+			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
+					      	LOADING
+					    </h1> :
+					    <Scroll>
+					      	<CardHolder Games = {filteredGames}/>
+					    </Scroll>
+			    	}
+			    </div> : 
+			    <h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
+			    	!UNKNOWN ROUTE!
+			    </h1>
+		      }
+		    </div>
+		);
 	}
 }
 

@@ -5,7 +5,7 @@ const CardHolder = ({Games}) => {
 	return (
 		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
-				Games.map((game, id) => {
+				Games.slice(0,50).map((game, id) => {
 					return (<GameCard 
 						key={id} 
 						imageLink={Games[id].imageLink} 
