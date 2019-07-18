@@ -9,14 +9,16 @@ import {Games} from '../../props/Games.js';
 import './App.css';
 
 class App extends Component {
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
 			games: [],
 			searchfield: '',
+			height: 450,
 			route: 'main',
 			isSignedIn: false,
-		}
+		};
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
 	componentDidMount(){
@@ -24,7 +26,17 @@ class App extends Component {
 		.then(response => { return response.json();})
 		.then(Games =>{ this.setState({games: Games});});*/
 		this.setState({games: Games});
+		this.updateWindowDimensions();
+        window.addEventListener("resize", this.updateWindowDimensions.bind(this));
 	}
+
+	componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWindowDimensions.bind(this));
+    }
+
+    updateWindowDimensions() {
+        this.setState({height: window.innerHeight });
+    }
 
 	onSearchChange = (event) =>{
 		this.setState({searchfield: event.target.value});
@@ -43,7 +55,7 @@ class App extends Component {
 	}
 
 	render(){
-		const {games, searchfield, route, isSignedIn} = this.state;
+		const {games, searchfield, height, route, isSignedIn} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
@@ -65,7 +77,7 @@ class App extends Component {
 			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
 					      	LOADING
 					    </h1> :
-					    <Scroll>
+					    <Scroll height={height}>
 					      	<CardHolder Games = {filteredGames}/>
 					    </Scroll>
 			    	}
@@ -74,6 +86,10 @@ class App extends Component {
 			    	!UNKNOWN ROUTE!
 			    </h1>
 		      }
+		      <div className="ma1 pa1" style={{fontSize:'10px', height: "15px", display: 'flex', flexDirectino: 'row', justifyContent: 'center'}}>
+		      	<img src="/images/copyright.png" alt="c" style={{height: '7px'}}/> 
+		      	<div className="tc">Copyright 2019 <span className="red b"> N&T</span></div>
+	      	  </div>
 		    </div>
 		);
 	}
