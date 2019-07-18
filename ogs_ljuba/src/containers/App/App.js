@@ -3,8 +3,8 @@ import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
 import CardHolder from '../../components/CardHolder/CardHolder';
 import Scroll from '../../components/Scroll/Scroll';
-import SignIn from '../../components/SignIn/SignIn';
-import Registration from '../../components/Registration/Registration';
+import SignIn from '../SignIn/SignIn';
+import Registration from '../Registration/Registration';
 import {Games} from '../../props/Games.js';
 import './App.css';
 
@@ -15,19 +15,32 @@ class App extends Component {
 			games: [],
 			searchfield: '',
 			height: 450,
-			route: 'main',
+			route: 'signin',
 			isSignedIn: false,
+			user: {
+				id: '',
+				name: '',
+				email: '',
+				orders: [],
+			}
 		};
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
 	componentDidMount(){
-		/*fetch('https://alas.matf.bg.ac.rs/~mi15200/Games')
-		.then(response => { return response.json();})
-		.then(Games =>{ this.setState({games: Games});});*/
 		this.setState({games: Games});
+
 		this.updateWindowDimensions();
         window.addEventListener("resize", this.updateWindowDimensions.bind(this));
+	}
+
+	loadUser = (data) =>{
+		this.setState({user: {
+			id: data.id,
+			name: data.name,
+			email: data.email,
+			orders: data.orders,
+		}});
 	}
 
 	componentWillUnmount() {
@@ -44,7 +57,7 @@ class App extends Component {
 
 	onRouteChange = (route) => {
 		if(route === 'singout'){
-			this.setState({route: 'main', isSignedIn: false});
+			this.setState({route: 'signin', isSignedIn: false});
 		}
 		else{
 			this.setState({route: route});
@@ -66,9 +79,9 @@ class App extends Component {
 		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
 		      {
 			    route === 'register' ?
-			    <Registration onRouteChange = {this.onRouteChange}/> :
+			    <Registration onRouteChange = {this.onRouteChange} loadUser={this.loadUser}/> :
 			    route === 'signin' ?
-			    <SignIn onRouteChange = {this.onRouteChange}/> :
+			    <SignIn onRouteChange = {this.onRouteChange} loadUser={this.loadUser}/> :
 			    route === 'main' ?
 			    <div>
 			    	<Search searchChange={this.onSearchChange}/>
