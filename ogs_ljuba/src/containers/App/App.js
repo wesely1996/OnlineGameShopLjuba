@@ -67,6 +67,21 @@ class App extends Component {
 		}
 	}
 
+	onOrderAdded = (orderid) =>{
+		fetch('http://localhost:3000/order', {
+			method: 'put',
+			headers: {'Content-type':'application/json'},
+			body: JSON.stringify({
+				userId: this.state.user.id,
+				orderId: orderid
+			})
+		})
+		.then(response => response.json())
+		.then(orders => {
+			console.log(orders);
+		})
+	}
+
 	render(){
 		const {games, searchfield, height, route, isSignedIn} = this.state;
 
@@ -91,7 +106,7 @@ class App extends Component {
 					      	LOADING
 					    </h1> :
 					    <Scroll height={height}>
-					      	<CardHolder Games = {filteredGames}/>
+					      	<CardHolder Games={filteredGames} OrderAdded={this.onOrderAdded}/>
 					    </Scroll>
 			    	}
 			    </div> : 

@@ -91,8 +91,6 @@ app.put('/order', (req, res) => {
 	if(!found){
 		res.status(400).json('no such user in the database');
 	}
-
-
 })
 
 app.listen(3000, () => {
