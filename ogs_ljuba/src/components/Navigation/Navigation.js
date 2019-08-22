@@ -1,16 +1,25 @@
 import React from 'react';
+import Cart from '../Cart/Cart';
+import Home from '../Cart/Home';
 import Logo from '../Logo/Logo';
 
-const Navigation = ({onRouteChange, isSignedIn}) => {
+const Navigation = ({onRouteChange, isSignedIn, route}) => {
 	if(isSignedIn){
 		return (
 			<nav style={{display: 'flex', justifyContent: 'space-between'}}>
 				<Logo/>
-				<p 
-				onClick={() => onRouteChange('singout')}
-				className='f4 link dim black underline pa2 ma1 pointer b grow'>
-					Sign Out
-				</p>
+				<div style={{display: 'flex', flexDirectino: 'row'}}>
+					{
+						route==='cart' ?
+						<Home onRouteChange = {onRouteChange}/> :
+						<Cart onRouteChange = {onRouteChange}/>
+					}
+					<p 
+					onClick={() => onRouteChange('singout')}
+					className='f4 link dim black underline pa2 ma1 pointer b grow'>
+						Sign Out
+					</p>
+				</div>
 			</nav>
 		);
 	}

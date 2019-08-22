@@ -12,8 +12,8 @@ class GameCard extends React.Component{
 				<button 
 				onClick={() => OrderAction(gameId)}
 				type="button" 
-				className="b shadow-1 buyButton">
-				BUY
+				className="b red cancelButton">
+				CANCEL ORDER
 				</button>
 			</div>
 		);

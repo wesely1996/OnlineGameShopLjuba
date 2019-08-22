@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
 import CardHolder from '../../components/CardHolder/CardHolder';
+import CardHolderCart from '../../components/CardHolder/CardHolderCart';
 import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';
@@ -78,20 +80,43 @@ class App extends Component {
 		})
 		.then(response => response.json())
 		.then(orders => {
-			console.log(orders);
+			this.setState({
+			  user: update(this.state.user, {orders: {$set: orders}})
+			})
+		})
+	}
+
+	onOrderRemoved = (orderid) =>{
+		fetch('http://localhost:3000/cart', {
+			method: 'put',
+			headers: {'Content-type':'application/json'},
+			body: JSON.stringify({
+				userId: this.state.user.id,
+				orderId: orderid
+			})
+		})
+		.then(response => response.json())
+		.then(orders => {
+			this.setState({
+			  user: update(this.state.user, {orders: {$set: orders}})
+			})
 		})
 	}
 
 	render(){
-		const {games, searchfield, height, route, isSignedIn} = this.state;
+		const {games, searchfield, height, route, isSignedIn, user} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
 		})
 
+		const filetrGamesInCart = games.filter(game =>{
+			return user.orders.includes(game.id);
+		})
+
 		return (
 			<div className="App">
-		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route}/>
 		      {
 			    route === 'register' ?
 			    <Registration onRouteChange = {this.onRouteChange} loadUser={this.loadUser}/> :
@@ -106,10 +131,22 @@ class App extends Component {
 					      	LOADING
 					    </h1> :
 					    <Scroll height={height}>
-					      	<CardHolder Games={filteredGames} OrderAdded={this.onOrderAdded}/>
+					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded}/>
 					    </Scroll>
 			    	}
 			    </div> : 
+			    route === 'cart' ?
+			    <div>
+			    	{
+			    		!games.length ?
+			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
+					      	LOADING
+					    </h1> :
+					    <Scroll height={height + 75}>
+					      	<CardHolderCart Games={filetrGamesInCart} OrderAction={this.onOrderRemoved}/>
+					    </Scroll>
+			    	}
+			    </div> :
 			    <h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 			    	!UNKNOWN ROUTE!
 			    </h1>

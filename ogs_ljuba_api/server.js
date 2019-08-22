@@ -15,7 +15,7 @@ const database = {
 			email: "csbalkan@gmail.com",
 			phone: "064444444",
 			password: "pass",
-			orders: ['1', '3', '4', '4', '10'],
+			orders: ['1', '3', '8', '4'],
 			joined: new Date(),
 		},
 		{
@@ -84,6 +84,23 @@ app.put('/order', (req, res) => {
 		if(user.id === userId){
 			found = true;
 			user.orders.push(orderId);
+			return res.json(user.orders);
+		}
+	});
+
+	if(!found){
+		res.status(400).json('no such user in the database');
+	}
+})
+
+app.put('/cart', (req, res) => {
+	const {userId, orderId} = req.body;
+	let found = false;
+
+	database.users.forEach(user => {
+		if(user.id === userId){
+			found = true;
+			user.orders.splice(orderId, 1);
 			return res.json(user.orders);
 		}
 	});
