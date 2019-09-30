@@ -7,6 +7,7 @@ import CardHolderCart from '../../components/CardHolder/CardHolderCart';
 import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';
+import ConfirmationButton from '../../components/Cart/ConfirmationButton';
 import {Games} from '../../props/Games.js';
 import './App.css';
 
@@ -81,8 +82,9 @@ class App extends Component {
 		.then(response => response.json())
 		.then(orders => {
 			this.setState({
-			  user: update(this.state.user, {orders: {$set: orders}})
+			  user: update(this.state.user, {orders: {$set: orders.sort()}})
 			})
+			console.log(this.state.user)
 		})
 	}
 
@@ -98,8 +100,9 @@ class App extends Component {
 		.then(response => response.json())
 		.then(orders => {
 			this.setState({
-			  user: update(this.state.user, {orders: {$set: orders}})
+			  user: update(this.state.user, {orders: {$set: orders.sort()}})
 			})
+			console.log(this.state.user)
 		})
 	}
 
@@ -142,9 +145,12 @@ class App extends Component {
 			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
 					      	LOADING
 					    </h1> :
-					    <Scroll height={height + 75}>
-					      	<CardHolderCart Games={filetrGamesInCart} OrderAction={this.onOrderRemoved}/>
-					    </Scroll>
+					    <div>
+						    <Scroll height={height}>
+						      	<CardHolderCart Games={filetrGamesInCart} OrderAction={this.onOrderRemoved}/>
+						    </Scroll>
+						    <ConfirmationButton/>
+					    </div>
 			    	}
 			    </div> :
 			    <h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>

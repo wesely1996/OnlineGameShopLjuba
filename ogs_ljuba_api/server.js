@@ -84,7 +84,7 @@ app.put('/order', (req, res) => {
 		if(user.id === userId){
 			found = true;
 			user.orders.push(orderId);
-			return res.json(user.orders);
+			return res.json(user.orders.sort());
 		}
 	});
 
@@ -100,13 +100,13 @@ app.put('/cart', (req, res) => {
 	database.users.forEach(user => {
 		if(user.id === userId){
 			found = true;
-			user.orders.splice(orderId, 1);
-			return res.json(user.orders);
+			user.orders.splice(user.orders.indexOf(orderId), 1);
+			return res.json(user.orders.sort());
 		}
 	});
 
 	if(!found){
-		res.status(400).json('no such user in the database');
+		res.status(400).json(userId);
 	}
 })
 
