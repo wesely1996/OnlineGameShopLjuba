@@ -16,7 +16,7 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 					}
 					<p 
 					onClick={() => onRouteChange('singout')}
-					className='f4 link dim black underline pa2 ma1 pointer b grow'>
+					className='f4 link dim white underline pa2 ma1 pointer b grow'>
 						Sign Out
 					</p>
 				</div>
@@ -30,12 +30,12 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 				<div style={{display: 'flex', flexDirectino: 'row'}}>
 					<p 
 					onClick={() => onRouteChange('signin')}
-					className='f4 link dim black underline pa2 ma1 pointer b grow'>
+					className='f4 link dim white underline pa2 ma1 pointer b grow'>
 						Sign In
 					</p>
 					<p 
 					onClick={() => onRouteChange('register')}
-					className='f4 link dim black underline pa2 ma1 pointer b grow'>
+					className='f4 link dim white underline pa2 ma1 pointer b grow'>
 						Sign Up
 					</p>
 				</div>
