@@ -21,7 +21,7 @@ class App extends Component {
 			route: 'signin',
 			isSignedIn: false,
 			user: {
-				id: '',
+				id: '',//TO-DO change to Object
 				name: '',
 				email: '',
 				orders: [],
