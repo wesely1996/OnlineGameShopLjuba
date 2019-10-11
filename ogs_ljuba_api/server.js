@@ -1,64 +1,53 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcryptjs');
+const md5 = require('md5')
 const cors = require('cors');
+let MongoClient = require('mongodb').MongoClient;
+let url = "mongodb://localhost:27017/";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const database = {
-	users: [
-		{
-			id: '123',
-			name: "Marko",
-			email: "csbalkan@gmail.com",
-			phone: "064444444",
-			password: "pass",
-			orders: ['1', '3', '8', '4'],
-			joined: new Date(),
-		},
-		{
-			id: '124',
-			name: "Milos",
-			email: "ghostd@yahoo.com",
-			phone: "0601234567",
-			password: "anatomija",
-			orders: ['2', '2', '5'],
-			joined: new Date(),
-		},
-	]
-}
-
-app.get('/', (req, res)=>{
-	res.json(database.users);
-})
-
-app.post('/signin', (req, res)=>{
-	if(req.body.email === database.users[0].email &&
-		req.body.password === database.users[0].password){
-		res.json(database.users[0]);
-	}
-	else{
-		res.status(400).json('error logging in');
-	}
-})
-
-app.post('/register', (req, res)=>{
-	const {name, email, phone, password} = req.body;
-
-	database.users.push({
-		id: '125',
-		name: name,
-		email: email,
-		phone: phone,
-		password: password,
-		orders: [],
-		joined: new Date(),
-	});
-
-	res.json(database.users[database.users.length - 1]);
-})
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  let dbo = db.db("GameShop");
+  
+  app.post('/register', (req, res)=>{
+	  const {name, email, phone, password} = req.body;
+    let hash=md5(password);
+    let myUser={name,email,phone,hash};
+    let query={email,phone};
+    dbo.collection("Users").find(query).toArray(function(err, result) {
+      if (err) throw err;
+      let count = Object.keys(result).length;
+      if(count==0){
+        dbo.collection("Users").insertOne(myUser, function(err, res) {
+          if (err) throw err;
+            console.log("1 document inserted");
+        })
+      }
+      else{
+          console.log("Email or phone number already in use!");
+      }
+    });
+  })
+  
+  app.post('/signin', (req, res)=>{
+	  const {email, password} = req.body;
+    let hash=md5(password);
+    let myUser={email};
+    dbo.collection("Users").find(myUser).toArray(function(err, result) {
+      if (err) throw err;
+      if(result!=null && hash==result[0].hash){//to od bcrypt check
+        res.json(result[0]);
+      }
+      else{
+        res.status(400).json("Email doesnt exist!");
+      }
+    });
+  })
+});
 
 app.get('/profile/:userId', (req, res)=>{
 	const {userId} = req.params;
