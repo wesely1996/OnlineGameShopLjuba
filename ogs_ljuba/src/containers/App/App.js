@@ -21,7 +21,7 @@ class App extends Component {
 			route: 'signin',
 			isSignedIn: false,
 			user: {
-				id: '',
+				id: '',//TO-DO change to Object
 				name: '',
 				email: '',
 				orders: [],
@@ -130,7 +130,7 @@ class App extends Component {
 			    	<Search searchChange={this.onSearchChange}/>
 			    	{
 			    		!games.length ?
-			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
+			    		<h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 					      	LOADING
 					    </h1> :
 					    <Scroll height={height}>
@@ -142,7 +142,7 @@ class App extends Component {
 			    <div>
 			    	{
 			    		!games.length ?
-			    		<h1 className="f1 b ma5 pa5 tc navy grow" style={{textShadow: 'gray 2px 0 10px'}}>
+			    		<h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 					      	LOADING
 					    </h1> :
 					    <div>
@@ -157,9 +157,11 @@ class App extends Component {
 			    	!UNKNOWN ROUTE!
 			    </h1>
 		      }
-		      <div className="ma1 pa1" style={{fontSize:'10px', height: "15px", display: 'flex', flexDirectino: 'row', justifyContent: 'center'}}>
-		      	<img src="/images/copyright.png" alt="c" style={{height: '7px'}}/> 
-		      	<div className="tc">Copyright 2019 <span className="red b"> N&T</span></div>
+		      <div className="ma1 pa1" style={{fontSize:'10px', height: "20px", display: 'flex', justifyContent: 'center'}}>
+				  <div className = "bg-black" style={{display: 'flex', flexDirectino: 'row'}}>
+				  	<img src="/images/copyright.png" alt="c" style={{height: '7px'}}/> 
+		      		<div className="white">Copyright 2019 <span className="red b"> N&T</span></div>
+				  </div>
 	      	  </div>
 		    </div>
 		);

@@ -6,7 +6,7 @@ const ConfirmationButton = () => {
 		<div className="ma1">
 			<button
 			type="button" 
-			className="b--black f3 br-pill grow cart">
+			className="b--white f3 br-pill grow bg-black-90 white">
 				CONFIRM
 			</button>
 		</div>
