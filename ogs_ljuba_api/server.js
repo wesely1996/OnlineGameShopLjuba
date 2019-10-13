@@ -24,7 +24,7 @@ MongoClient.connect(url, function(err, db) {
       if(count==0){
         dbo.collection("Users").insertOne(myUser, function(err, res) {
           if (err) throw err;
-            console.log("1 document inserted");
+           console.log("1 document inserted");
         })
       }
       else{
@@ -39,7 +39,7 @@ MongoClient.connect(url, function(err, db) {
     let myUser={email};
     dbo.collection("Users").find(myUser).toArray(function(err, result) {
       if (err) throw err;
-      if(result!=null && hash==result[0].hash){//to od bcrypt check
+      if(result!=null && hash==result[0].hash){
         res.json(result[0]);
       }
       else{
