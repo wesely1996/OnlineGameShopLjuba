@@ -22,9 +22,15 @@ MongoClient.connect(url, function(err, db) {
       if (err) throw err;
       let count = Object.keys(result).length;
       if(count==0){
-        dbo.collection("Users").insertOne(myUser, function(err, res) {
-          if (err) throw err;
-           console.log("1 document inserted");
+        dbo.collection("Users").insertOne(myUser, function(err, result) {
+		  if (err) throw err;
+		  console.log("1 document inserted (user)");
+		  
+		  let myOrders = {UserId:result.insertedId, Orders:[]}
+		  dbo.collection("Orders").insertOne(myOrders,function(err, result){
+			  if(err) throw err;
+			  console.log("1 document inserted (orders)")
+		  })
         })
       }
       else{
@@ -36,11 +42,19 @@ MongoClient.connect(url, function(err, db) {
   app.post('/signin', (req, res)=>{
 	  const {email, password} = req.body;
     let hash=md5(password);
-    let myUser={email};
-    dbo.collection("Users").find(myUser).toArray(function(err, result) {
-      if (err) throw err;
-      if(result!=null && hash==result[0].hash){
-        res.json(result[0]);
+    dbo.collection("Users").find({"email" : email, "hash" : hash}).toArray(function(err, result) {
+	  if (err) throw err;
+      if(result!=null){
+		  dbo.collection("Orders").find({"UserId" : result[0]._id}).toArray(function(err, result2){
+			if(err) throw err;
+			if(result2!=null){
+				let user = {id: result[0]._id, name: result[0].name, email: result[0].email, orders: result2[0].Orders};
+				res.json(user);
+			}
+			else{
+				res.status(204).json("Missing orders");
+			}
+		  })
       }
       else{
         res.status(400).json("Email doesnt exist!");

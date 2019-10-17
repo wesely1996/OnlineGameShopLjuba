@@ -38,13 +38,7 @@ class Registration extends React.Component{
 				password: this.state.password
 			})
 		})
-		.then(response => response.json())
-		.then(user => {
-			if(user){
-				this.props.loadUser(user);
-				this.props.onRouteChange('main');
-			}
-		})
+		.then(this.props.onRouteChange('signin'))
 	}
 
 	render(){
