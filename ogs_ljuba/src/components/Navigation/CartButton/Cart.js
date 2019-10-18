@@ -1,5 +1,4 @@
 import React from 'react';
-import './Cart.css';
 
 const Cart = ({onRouteChange}) => {
 	return(
@@ -7,8 +6,8 @@ const Cart = ({onRouteChange}) => {
 			<button
 			onClick={() => onRouteChange('cart')}
 			type="button" 
-			className="b--transparent br-pill cart grow">
-				<img alt={'CART'} src={'/images/cart.png'} style={{width: 25, height: 25, minWidth: 25}}/>
+			className="b--transparent br-pill bg-black-60 grow">
+				<img alt={'CART'} src={'/images/cart.png'} style={{width: 45, height: 45, minWidth: 25, minHeight: 25}}/>
 			</button>
 		</div>
 	);

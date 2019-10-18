@@ -3,7 +3,7 @@ import update from 'react-addons-update';
 import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
 import CardHolder from '../../components/CardHolder/CardHolder';
-import CardHolderCart from '../../components/CardHolder/CardHolderCart';
+import CardHolderCart from '../../components/Cart/CardHolderCart';
 import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';

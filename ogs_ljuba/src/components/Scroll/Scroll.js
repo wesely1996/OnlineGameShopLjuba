@@ -4,7 +4,7 @@ import './Scroll.css';
 const Scroll = (props) => {
 	const divStyle = {
 		overflowY: 'scroll',
-		height: props.height*0.73 + 'px'
+		height: (props.height - 20 - 87)*0.87 + 'px'
 	};
 
 	return (
