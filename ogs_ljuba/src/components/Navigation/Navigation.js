@@ -25,19 +25,22 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 	}
 	else{
 		return (
-			<nav style={{display: 'flex', justifyContent: 'space-between'}}>
-				<Logo/>
+			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<div style={{display: 'flex', flexDirectino: 'row'}}>
-					<p 
-					onClick={() => onRouteChange('signin')}
-					className='f4 link dim white underline pa2 ma1 pointer b grow'>
-						Sign In
-					</p>
-					<p 
-					onClick={() => onRouteChange('register')}
-					className='f4 link dim white underline pa2 ma1 pointer b grow'>
-						Sign Up
-					</p>
+					{
+						route==='register' ?
+						<p 
+						onClick={() => onRouteChange('signin')}
+						className='f4 link dim white underline pa2 ma1 pointer b grow'>
+							Sign In
+						</p>
+						:
+						<p 
+						onClick={() => onRouteChange('register')}
+						className='f4 link dim white underline pa2 ma1 pointer b grow'>
+							Sign Up
+						</p>
+					}
 				</div>
 			</nav>
 		);

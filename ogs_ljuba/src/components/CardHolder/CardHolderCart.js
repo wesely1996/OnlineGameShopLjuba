@@ -8,10 +8,10 @@ const CardHolder = ({Games, OrderAction}) => {
 				Games.map((game, id) => {
 					return (<GameCard 
 						key={id} 
-						gameId={Games[id].id}
-						imageLink={Games[id].imageLink} 
-						gameName = {Games[id].gameName} 
-						price = {Games[id].price}
+						gameId={game.id}
+						imageLink={game.imageLink} 
+						gameName = {game.gameName} 
+						price = {game.price}
 						OrderAction = {OrderAction}
 					/>);
 				})

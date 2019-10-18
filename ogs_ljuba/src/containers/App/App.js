@@ -8,7 +8,6 @@ import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Cart/ConfirmationButton';
-import {Games} from '../../props/Games.js';
 import './App.css';
 
 class App extends Component {
@@ -24,17 +23,29 @@ class App extends Component {
 				id: {},
 				name: '',
 				email: '',
+				cart: [],
 				orders: [],
 			}
 		};
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
+	getGames = () => {
+		fetch('http://localhost:3000/games', {
+			method: 'get',
+			headers: {'Content-type':'application/json'},
+		})
+		.then(response => response.json())
+		.then(Games => {
+			this.setState({games: Games});
+		})
+	}
+
 	componentDidMount(){
-		this.setState({games: Games});
+		this.getGames();
 
 		this.updateWindowDimensions();
-        window.addEventListener("resize", this.updateWindowDimensions.bind(this));
+		window.addEventListener("resize", this.updateWindowDimensions.bind(this));
 	}
 
 	loadUser = (data) =>{
@@ -42,6 +53,7 @@ class App extends Component {
 			id: data.id,
 			name: data.name,
 			email: data.email,
+			cart: data.cart,
 			orders: data.orders,
 		}});
 	}
@@ -60,7 +72,7 @@ class App extends Component {
 
 	onRouteChange = (route) => {
 		if(route === 'singout'){
-			this.setState({route: 'signin', isSignedIn: false});
+			this.setState({route: 'signin', isSignedIn: false, user: {id: {}, name: '', email: '', cart: [], orders: []}});
 		}
 		else{
 			this.setState({route: route});
