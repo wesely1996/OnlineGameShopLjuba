@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import update from 'react-addons-update';
 import Navigation from '../../components/Navigation/Navigation';
 import Search from '../../components/Search/Search';
-import CardHolder from '../../components/CardHolder/CardHolder';
-import CardHolderCart from '../../components/Cart/CardHolderCart';
+import CardHolder from '../../components/Holders/CardHolder';
 import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';
-import ConfirmationButton from '../../components/Cart/ConfirmationButton';
+import ConfirmationButton from '../../components/CartConfirmButton/ConfirmationButton';
+import OrderHolder from '../../components/Holders/OrderHolder';
 import './App.css';
 
 class App extends Component {
@@ -146,7 +146,7 @@ class App extends Component {
 					      	LOADING
 					    </h1> :
 					    <Scroll height={height}>
-					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded}/>
+					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded} route={route}/>
 					    </Scroll>
 			    	}
 			    </div> : 
@@ -159,12 +159,27 @@ class App extends Component {
 					    </h1> :
 					    <div>
 						    <Scroll height={height}>
-						      	<CardHolderCart Games={filetrGamesInCart} OrderAction={this.onOrderRemoved}/>
+						      	<CardHolder Games={filetrGamesInCart} OrderAction={this.onOrderRemoved} route={route}/>
 						    </Scroll>
 						    <ConfirmationButton/>
 					    </div>
 			    	}
-			    </div> :
+				</div> :
+				route === 'userPage'?
+				<div>
+					{
+			    		!games.length ?
+			    		<h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
+					      	LOADING
+					    </h1> :
+					    <div>
+							<Search searchChange={this.onSearchChange}/>
+						    <Scroll height={height}>
+								<OrderHolder Orders={user.orders}/>
+						    </Scroll>
+					    </div>
+			    	}
+				</div> :
 			    <h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 			    	!UNKNOWN ROUTE!
 			    </h1>

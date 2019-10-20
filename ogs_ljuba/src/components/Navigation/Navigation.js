@@ -19,7 +19,11 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 					}
 					</div>
 					<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-						<UserIcon/>
+						{
+							route === 'userPage' ?
+							<Home onRouteChange = {onRouteChange}/> :
+							<UserIcon onRouteChange = {onRouteChange}/>
+						}
 					</div>
 					<div
 					style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}
