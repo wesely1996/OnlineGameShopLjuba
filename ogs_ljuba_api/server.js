@@ -15,8 +15,8 @@ MongoClient.connect(url, (err, db) => {
   
   app.post('/register', (req, res)=>{
 	  const {name, email, phone, password} = req.body;
-	let hash=md5(password);
-	let cart=[];
+	  let hash=md5(password);
+	  let cart=[];
     let myUser={name,email,phone,hash,cart};
     let query={email,phone};
     dbo.collection("Users").find(query).toArray((err, result) => {
@@ -24,20 +24,19 @@ MongoClient.connect(url, (err, db) => {
       let count = Object.keys(result).length;
       if(count==0){
         dbo.collection("Users").insertOne(myUser, (err, result) => {
-		  if (err) throw err;
-		  console.log("1 document inserted (user)");
+		      if (err) throw err;
+		      console.log("1 document inserted (user)");
 		  
-		  let myOrders = {UserId:result.insertedId, Orders:[]}
-		  dbo.collection("Orders").insertOne(myOrders,(err) => {
-			  if(err) throw err;
-			  console.log("1 document inserted (orders)")
-		  })
-		  res.status(201).json("User Created");
+		      let myOrders = {UserId:result.insertedId, Orders:[]}
+		      dbo.collection("Orders").insertOne(myOrders,(err) => {
+			      if(err) throw err;
+			      console.log("1 document inserted (orders)")
+		      })
+		      res.status(201).json("User Created");
         })
       }
       else{
-		  console.log("Email or phone number already in use!");
-		  res.status(401).json("Email or phone number already in use!");
+		    res.status(401).json("Email or phone number already in use!");
       }
     });
   })
@@ -47,7 +46,8 @@ MongoClient.connect(url, (err, db) => {
     let hash=md5(password);
     dbo.collection("Users").find({"email":email}).toArray((err, result) => {
 	  if (err) throw err;
-      if(result!=null){
+      let count = Object.keys(result).length;
+      if(count!=0){
 		  if(result[0].hash!=hash){
 			res.status(401).status('Wrong password');
 		  }
@@ -71,65 +71,70 @@ MongoClient.connect(url, (err, db) => {
   })
   
   app.get('/games', (req, res)=>{
-	dbo.collection("Games").find().toArray((err, result) => {
-		if(err) throw err;
-		if(result){
-			res.json(result);
-		}
-	})
+      dbo.collection("Games").find().toArray((err, result) => {
+        if(err) throw err;
+        if(result){
+          res.json(result);
+        }
+      })
   })
 
+  app.get('/profile/:userId', (req, res)=>{
+    const {userId} = req.params;
+    let found = false;
+
+    dbo.collection("Users").find(userId).toArray((err,result) =>{
+      let count = Object.keys(reslut).lenght;
+      if(count!=0){
+        found = true;
+        res.json(result[0]._id);
+      }
+    });
+
+    if(!found){
+      res.status(400).json('no such user in the database');
+    }
+  })
+
+  app.put('/cart',(req,res)=>{
+      const {userId,orderId}=req.body;
+      db.collection("Users").find(userId).toArray((err,result)=>{
+        let count = Object.keys(result).length;
+        if(count==0){
+          res.status(400).json('no user');
+        }
+        result[0].cart.push(orderId);
+      })
+  })
+
+  app.put('/order',(req,res)=>{
+    const {userId,orderId}=req.body;
+    dbo.collection("Users").find(userId).toArray((err,result) => {
+      if(err) throw err;
+      let count =Object.keys(result).length;
+      if(count==0){
+        res.status(400).json('no user');
+      }
+      let stat="pending";
+      let mycart={userId,result[0].cart,stat};
+	    dbo.collection("Orders").insertOne(mycart,(err,result) =>{
+        if(err) throw err;
+        console.log("1 document inserted in Orders");
+      })
+    })
+  })
+  app.patch('/cancelItem',(req,res)=>{
+    cosnt {userId,orderId}=req.body;
+    dbo.collection("Users").find(userId).toArray((err,result)=>{
+      if(err)throw err;
+      let count = Object.keys(result).length;
+      if(count==0){
+        res.status(400).json('no user');
+      }
+      delete result[0].cart[orderId];
+    })
+  })
 });
-
-app.get('/profile/:userId', (req, res)=>{
-	const {userId} = req.params;
-	let found = false;
-
-	database.users.forEach(user => {
-		if(user.id === userId){
-			found = true;
-			return res.json(user);
-		}
-	});
-
-	if(!found){
-		res.status(400).json('no such user in the database');
-	}
-})
-
-app.put('/order', (req, res) => {
-	const {userId, orderId} = req.body;
-	let found = false;
-
-	database.users.forEach(user => {
-		if(user.id === userId){
-			found = true;
-			user.orders.push(orderId);
-			return res.json(user.orders.sort());
-		}
-	});
-
-	if(!found){
-		res.status(400).json('no such user in the database');
-	}
-})
-
-app.put('/cart', (req, res) => {
-	const {userId, orderId} = req.body;
-	let found = false;
-
-	database.users.forEach(user => {
-		if(user.id === userId){
-			found = true;
-			user.orders.splice(user.orders.indexOf(orderId), 1);
-			return res.json(user.orders.sort());
-		}
-	});
-
-	if(!found){
-		res.status(400).json(userId);
-	}
-})
 
 app.listen(3000, () => {
 	console.log("app is running on port 3000");
