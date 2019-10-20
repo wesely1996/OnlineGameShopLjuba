@@ -99,11 +99,13 @@ MongoClient.connect(url, (err, db) => {
   app.put('/cart',(req,res)=>{
       const {userId,orderId}=req.body;
       db.collection("Users").find(userId).toArray((err,result)=>{
+        if(err) throw err;
         let count = Object.keys(result).length;
         if(count==0){
           res.status(400).json('no user');
         }
         result[0].cart.push(orderId);
+        res.json(result[0].cart);
       })
   })
 
@@ -111,20 +113,22 @@ MongoClient.connect(url, (err, db) => {
     const {userId,orderId}=req.body;
     dbo.collection("Users").find(userId).toArray((err,result) => {
       if(err) throw err;
-      let count =Object.keys(result).length;
+      let count = Object.keys(result).length;
       if(count==0){
         res.status(400).json('no user');
       }
       let stat="pending";
-      let mycart={userId,result[0].cart,stat};
+      let gameId = result[0].cart;
+      let mycart={userId,gameId,stat};
 	    dbo.collection("Orders").insertOne(mycart,(err,result) =>{
         if(err) throw err;
         console.log("1 document inserted in Orders");
       })
     })
   })
+
   app.patch('/cancelItem',(req,res)=>{
-    cosnt {userId,orderId}=req.body;
+    const {userId,orderId} = req.body;
     dbo.collection("Users").find(userId).toArray((err,result)=>{
       if(err)throw err;
       let count = Object.keys(result).length;
@@ -132,8 +136,10 @@ MongoClient.connect(url, (err, db) => {
         res.status(400).json('no user');
       }
       delete result[0].cart[orderId];
+      res.json(result[0].cart);
     })
   })
+
 });
 
 app.listen(3000, () => {
