@@ -103,14 +103,17 @@ MongoClient.connect(url, (err, db) => {
   */
   app.put('/addToCart',(req,res)=>{
       const {userId,orderId}=req.body;
-      db.collection("Users").find(userId).toArray((err,result)=>{
+      dbo.collection("Users").find(userId).toArray((err,result)=>{
         if(err) throw err;
         let count = Object.keys(result).length;
         if(count==0){
           res.status(400).json('no user');
         }
-        result[0].cart.push(orderId);
-        res.json(result[0].cart);
+        else {
+          dbo.collection("Users").update({"_id":userId},{$push : {cart : orderId}})
+          console.log(result[0]);
+          res.json(result[0].cart);
+        }
       })
   })
     /*
