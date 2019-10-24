@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 {"_id":{"$oid":"5da09e3febb7f10f92e81382"},"name":"Nikola","email":"nikoladamjan@live.com","phone":"0606444898","hash":"30931699d4fdbc3836e918f01721b57d","cart":""}
 {"_id":{"$oid":"5da0a00e5b8b37117b1b9742"},"name":"Mihajlo","email":"mihajlo@live.com","phone":"0606444898","hash":"30931699d4fdbc3836e918f01721b57d","cart":""}
 {"_id":{"$oid":"5da22c38aefd3307334c7a66"},"name":"Mihajlovic","email":"nikola@live.com","phone":"060066566","hash":"f561aaf6ef0bf14d4208bb46a4ccb3ad","cart":""}
+=======
+{"_id":{"$oid":"5db058ffce6d792ee0064893"},"name":"Tester","email":"test@test.com","phone":"0000000000","hash":"098f6bcd4621d373cade4e832627b4f6","cart":["5da32e0b8908133a20bff15e","5da32e0b8908133a20bff15e"]}
+{"_id":{"$oid":"5db204cbd181f52d6c75ca2a"},"name":"Nikola Veselinovic","email":"t@test.com","phone":"0646600821","hash":"098f6bcd4621d373cade4e832627b4f6","cart":[]}
+>>>>>>> refs/remotes/origin/master
