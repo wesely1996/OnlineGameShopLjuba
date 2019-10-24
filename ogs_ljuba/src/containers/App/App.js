@@ -143,7 +143,7 @@ class App extends Component {
 		})
 
 		const filetrGamesInCart = games.filter(game =>{
-			return user.orders.includes(game.id);
+			return user.cart.includes(game._id);
 		})
 
 		return (
@@ -178,7 +178,7 @@ class App extends Component {
 						    <Scroll height={height}>
 						      	<CardHolder Games={filetrGamesInCart} OrderAction={this.onOrderRemoved} route={route}/>
 						    </Scroll>
-						    <ConfirmationButton/>
+						    <ConfirmationButton OrderAction={this.moveToOrders}/>
 					    </div>
 			    	}
 				</div> :
