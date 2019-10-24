@@ -163,7 +163,7 @@ class App extends Component {
 					      	LOADING
 					    </h1> :
 					    <Scroll height={height}>
-					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded} route={route}/>
+					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded} route={route} from={0} to={games.length}/>
 					    </Scroll>
 			    	}
 			    </div> : 
@@ -176,7 +176,7 @@ class App extends Component {
 					    </h1> :
 					    <div>
 						    <Scroll height={height}>
-						      	<CardHolder Games={filetrGamesInCart} OrderAction={this.onOrderRemoved} route={route}/>
+						      	<CardHolder Games={filetrGamesInCart} AllGamesInCart={user.cart} OrderAction={this.onOrderRemoved} route={route}/>
 						    </Scroll>
 						    <ConfirmationButton OrderAction={this.moveToOrders}/>
 					    </div>

@@ -2,13 +2,15 @@ import React from 'react';
 import GameCard from '../Cards/GameCard';
 import GameCardCart from '../Cards/GameCardCart';
 
-const CardHolder = ({Games, OrderAction, route}) => {
+
+const CardHolder = ({Games, AllGamesInCart, OrderAction, route, from, to}) => {
+
 	return (
 		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
-				Games.map((game, id) => {
+				route === 'main' ?
+				Games.slice(from, to).map((game, id) => {
 					return (
-						route === 'main' ?
 						<GameCard 
 						key={id} 
 						gameId={game.id}
@@ -16,10 +18,16 @@ const CardHolder = ({Games, OrderAction, route}) => {
 						gameName = {game.gameName} 
 						price = {game.price}
 						OrderAction = {OrderAction}
-						/>:
+						/>
+					);
+				})
+				:
+				Games.slice(0, Games.length).map((game, id) => {
+					return (
 						<GameCardCart 
+						aGiC = {AllGamesInCart}
 						key={id} 
-						gameId={game.id}
+						gameId={game._id}
 						imageLink={game.imageLink} 
 						gameName = {game.gameName} 
 						price = {game.price}

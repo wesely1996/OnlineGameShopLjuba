@@ -2,6 +2,7 @@ import React from 'react';
 import OrderCard from '../Cards/OrderCard';
 
 const OrderHolder = ({Orders}) => {
+	console.log("ok");
 	return (
 		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
