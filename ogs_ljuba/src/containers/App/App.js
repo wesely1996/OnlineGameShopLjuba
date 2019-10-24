@@ -29,7 +29,7 @@ class App extends Component {
 		};
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
-
+	//get all games and place them in an array
 	getGames = () => {
 		fetch('http://localhost:3000/games', {
 			method: 'get',
@@ -47,7 +47,7 @@ class App extends Component {
 		this.updateWindowDimensions();
 		window.addEventListener("resize", this.updateWindowDimensions.bind(this));
 	}
-
+	//set new data for the user
 	loadUser = (data) =>{
 		this.setState({user: {
 			id: data.id,
@@ -69,7 +69,7 @@ class App extends Component {
 	onSearchChange = (event) =>{
 		this.setState({searchfield: event.target.value});
 	}
-
+	//route manager
 	onRouteChange = (route) => {
 		if(route === 'singout'){
 			this.setState({route: 'signin', isSignedIn: false, user: {id: {}, name: '', email: '', cart: [], orders: []}});
@@ -81,9 +81,26 @@ class App extends Component {
 			}
 		}
 	}
+	//move items from cart to orders
+	moveToOrders = () =>{
+		fetch('http://localhost:3000/order', {
+			method: 'put',
+			headers: {'Content-type':'application/json'},
+			body: JSON.stringify({
+				userId: this.state.user.id
+			})
+		})
+		.then(response => response.json())
+		.then(orders => {
+			this.setState({
+			  user: update(this.state.user, {cart: {$set: []}, orders: {$set: orders.sort()}})
+			})
+			console.log(this.state.user)
+		})
+	}
 
 	onOrderAdded = (orderid) =>{
-		fetch('http://localhost:3000/order', {
+		fetch('http://localhost:3000/addToCart', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
 			body: JSON.stringify({
@@ -92,16 +109,16 @@ class App extends Component {
 			})
 		})
 		.then(response => response.json())
-		.then(orders => {
+		.then(cart => {
 			this.setState({
-			  user: update(this.state.user, {orders: {$set: orders.sort()}})
+			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
 			console.log(this.state.user)
 		})
 	}
 
 	onOrderRemoved = (orderid) =>{
-		fetch('http://localhost:3000/cart', {
+		fetch('http://localhost:3000/cancelItem', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
 			body: JSON.stringify({
@@ -110,9 +127,9 @@ class App extends Component {
 			})
 		})
 		.then(response => response.json())
-		.then(orders => {
+		.then(cart => {
 			this.setState({
-			  user: update(this.state.user, {orders: {$set: orders.sort()}})
+			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
 			console.log(this.state.user)
 		})

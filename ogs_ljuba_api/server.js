@@ -9,10 +9,18 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+//TO-DO fix db.collection is not a function
 MongoClient.connect(url, (err, db) => {
   if (err) throw err;
-  let dbo = db.db("GameShop");
+  const dbo = db.db("GameShop");
   
+  /*
+    Refister
+    IN: name and surname, email, phone number, password
+    f: in db.Users check if there is a user with the same email
+    if there isnt create a new user
+    OUT: error | ok
+  */
   app.post('/register', (req, res)=>{
 	  const {name, email, phone, password} = req.body;
 	  let hash=md5(password);
@@ -41,6 +49,12 @@ MongoClient.connect(url, (err, db) => {
     });
   })
   
+  /*
+  SignIn
+  IN: email, password
+  f: find user whit that email and check password
+  OUT: error | user: {id, name , email, cart, orders}
+  */
   app.post('/signin', (req, res)=>{
 	  const {email, password} = req.body;
     let hash=md5(password);
@@ -69,7 +83,10 @@ MongoClient.connect(url, (err, db) => {
       }
     });
   })
-  
+  /*
+  Games
+  f: returns all games in db.Games
+  */
   app.get('/games', (req, res)=>{
       dbo.collection("Games").find().toArray((err, result) => {
         if(err) throw err;
@@ -78,25 +95,13 @@ MongoClient.connect(url, (err, db) => {
         }
       })
   })
-
-  app.get('/profile/:userId', (req, res)=>{
-    const {userId} = req.params;
-    let found = false;
-
-    dbo.collection("Users").find(userId).toArray((err,result) =>{
-      let count = Object.keys(reslut).lenght;
-      if(count!=0){
-        found = true;
-        res.json(result[0]._id);
-      }
-    });
-
-    if(!found){
-      res.status(400).json('no such user in the database');
-    }
-  })
-
-  app.put('/cart',(req,res)=>{
+  /*
+  AddToCart
+  IN: userID, orderID
+  f: finds user with _id == userID and adds orderID as a new element in the cart array
+  OUT: error | cart
+  */
+  app.put('/addToCart',(req,res)=>{
       const {userId,orderId}=req.body;
       db.collection("Users").find(userId).toArray((err,result)=>{
         if(err) throw err;
@@ -108,9 +113,33 @@ MongoClient.connect(url, (err, db) => {
         res.json(result[0].cart);
       })
   })
-
+    /*
+  CancleItem
+  IN: userID, orderID
+  f: delete one instance of an order in cart
+  OUT: error | cart
+  */
+  app.patch('/cancelItem',(req,res)=>{
+    const {userId,orderId} = req.body;
+    dbo.collection("Users").find(userId).toArray((err,result)=>{
+      if(err)throw err;
+      let count = Object.keys(result).length;
+      if(count==0){
+        res.status(400).json('no user');
+      }
+      delete result[0].cart[orderId];
+      res.json(result[0].cart);
+    })
+  })
+  /*
+  Order
+  IN: userId
+  f: find user with userID and order with userID and transfer all elements from
+  cart to that order as new elements
+  out: error | orders
+  */
   app.put('/order',(req,res)=>{
-    const {userId,orderId}=req.body;
+    const {userId}=req.body;
     dbo.collection("Users").find(userId).toArray((err,result) => {
       if(err) throw err;
       let count = Object.keys(result).length;
@@ -126,20 +155,6 @@ MongoClient.connect(url, (err, db) => {
       })
     })
   })
-
-  app.patch('/cancelItem',(req,res)=>{
-    const {userId,orderId} = req.body;
-    dbo.collection("Users").find(userId).toArray((err,result)=>{
-      if(err)throw err;
-      let count = Object.keys(result).length;
-      if(count==0){
-        res.status(400).json('no user');
-      }
-      delete result[0].cart[orderId];
-      res.json(result[0].cart);
-    })
-  })
-
 });
 
 app.listen(3000, () => {
