@@ -110,6 +110,7 @@ class App extends Component {
 		})
 		.then(response => response.json())
 		.then(cart => {
+			console.log(cart)
 			this.setState({
 			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})

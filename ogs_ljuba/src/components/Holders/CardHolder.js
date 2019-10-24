@@ -13,7 +13,7 @@ const CardHolder = ({Games, AllGamesInCart, OrderAction, route, from, to}) => {
 					return (
 						<GameCard 
 						key={id} 
-						gameId={game.id}
+						gameId={game._id}
 						imageLink={game.imageLink} 
 						gameName = {game.gameName} 
 						price = {game.price}

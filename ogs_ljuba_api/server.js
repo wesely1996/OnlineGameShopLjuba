@@ -9,29 +9,23 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-//TO-DO fix db.collection is not a function
 MongoClient.connect(url, (err, db) => {
   if (err) throw err;
   const dbo = db.db("GameShop");
-  
-  /*
-    Refister
-    IN: name and surname, email, phone number, password
-    f: in db.Users check if there is a user with the same email
-    if there isnt create a new user
-    OUT: error | ok
-  */
+  const users = dbo.collection("Users");
+
+  //Register(name and surname, email, phone number, password) => error | add new user to database | user exists
   app.post('/register', (req, res)=>{
 	  const {name, email, phone, password} = req.body;
 	  let hash=md5(password);
 	  let cart=[];
     let myUser={name,email,phone,hash,cart};
     let query={email,phone};
-    dbo.collection("Users").find(query).toArray((err, result) => {
+    users.find(query).toArray((err, result) => {
       if (err) throw err;
       let count = Object.keys(result).length;
       if(count==0){
-        dbo.collection("Users").insertOne(myUser, (err, result) => {
+        users.insertOne(myUser, (err, result) => {
 		      if (err) throw err;
 		      console.log("1 document inserted (user)");
 		  
@@ -49,16 +43,11 @@ MongoClient.connect(url, (err, db) => {
     });
   })
   
-  /*
-  SignIn
-  IN: email, password
-  f: find user whit that email and check password
-  OUT: error | user: {id, name , email, cart, orders}
-  */
+  //SignIn(email, password) => error | user: {id, name , email, cart, orders}
   app.post('/signin', (req, res)=>{
 	  const {email, password} = req.body;
     let hash=md5(password);
-    dbo.collection("Users").find({"email":email}).toArray((err, result) => {
+    users.find({"email":email}).toArray((err, result) => {
 	  if (err) throw err;
       let count = Object.keys(result).length;
       if(count!=0){
@@ -69,7 +58,7 @@ MongoClient.connect(url, (err, db) => {
 			  	dbo.collection("Orders").find({"UserId" : result[0]._id}).toArray((err, result2) => {
 					if(err) throw err;
 					if(result2){
-						let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
+            let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
 						res.json(user);
 					}
 					else{
@@ -83,10 +72,8 @@ MongoClient.connect(url, (err, db) => {
       }
     });
   })
-  /*
-  Games
-  f: returns all games in db.Games
-  */
+
+  //returns all games in db.Games
   app.get('/games', (req, res)=>{
       dbo.collection("Games").find().toArray((err, result) => {
         if(err) throw err;
@@ -95,36 +82,40 @@ MongoClient.connect(url, (err, db) => {
         }
       })
   })
-  /*
-  AddToCart
-  IN: userID, orderID
-  f: finds user with _id == userID and adds orderID as a new element in the cart array
-  OUT: error | cart
-  */
+
+  //AddToCart(userID, orderID) => error | new cart
   app.put('/addToCart',(req,res)=>{
       const {userId,orderId}=req.body;
-      dbo.collection("Users").find(userId).toArray((err,result)=>{
+      users.find().toArray((err,result)=>{
         if(err) throw err;
-        let count = Object.keys(result).length;
+        let count = result.length;
         if(count==0){
-          res.status(400).json('no user');
+          res.status(400).json(['no user']);
         }
         else {
-          dbo.collection("Users").update({"_id":userId},{$push : {cart : orderId}})
-          console.log(result[0]);
-          res.json(result[0].cart);
+          result.forEach(user=>{
+            if(user._id == userId){
+              console.log(users.update(
+                {"_id": user._id},
+                { $addToSet: { "cart" : orderId } },
+                {multi: true,
+                useNewUrlParser: true}, 
+                function(err){
+                    console.log(err);
+                }
+             ))
+             user.cart.push(orderId);
+             res.json(user.cart)
+            }
+          })
         }
       })
   })
-    /*
-  CancleItem
-  IN: userID, orderID
-  f: delete one instance of an order in cart
-  OUT: error | cart
-  */
+
+  //CancelItem(userID, orderID) => error | new cart
   app.patch('/cancelItem',(req,res)=>{
     const {userId,orderId} = req.body;
-    dbo.collection("Users").find(userId).toArray((err,result)=>{
+    users.find(userId).toArray((err,result)=>{
       if(err)throw err;
       let count = Object.keys(result).length;
       if(count==0){
@@ -134,16 +125,11 @@ MongoClient.connect(url, (err, db) => {
       res.json(result[0].cart);
     })
   })
-  /*
-  Order
-  IN: userId
-  f: find user with userID and order with userID and transfer all elements from
-  cart to that order as new elements
-  out: error | orders
-  */
+
+  //Order(userId) => error | new orders
   app.put('/order',(req,res)=>{
     const {userId}=req.body;
-    dbo.collection("Users").find(userId).toArray((err,result) => {
+    users.find(userId).toArray((err,result) => {
       if(err) throw err;
       let count = Object.keys(result).length;
       if(count==0){
