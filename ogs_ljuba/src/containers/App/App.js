@@ -6,8 +6,9 @@ import CardHolder from '../../components/Holders/CardHolder';
 import Scroll from '../../components/Scroll/Scroll';
 import SignIn from '../SignIn/SignIn';
 import Registration from '../Registration/Registration';
-import ConfirmationButton from '../../components/CartConfirmButton/ConfirmationButton';
+import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
+import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
 import './App.css';
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
 			height: 450,
 			route: 'signin',
 			isSignedIn: false,
+			page: '',
 			user: {
 				id: {},
 				name: '',
@@ -41,8 +43,17 @@ class App extends Component {
 		})
 	}
 
+	getPage = () =>{
+		if(this.state.games.length > 50){
+			this.setState({page: 'first'})
+		}else{
+			this.setState({page: 'firstAndLast'})
+		}
+	}
+
 	componentDidMount(){
 		this.getGames();
+		this.getPage();
 
 		this.updateWindowDimensions();
 		window.addEventListener("resize", this.updateWindowDimensions.bind(this));
@@ -69,6 +80,39 @@ class App extends Component {
 	onSearchChange = (event) =>{
 		this.setState({searchfield: event.target.value});
 	}
+
+	changePage = (newPage) => {
+		let page=this.state.page;
+		let games=this.state.games;
+
+		if(newPage === 'first'){
+			this.setState({page: 'first'})
+		}
+		if(newPage === 'last'){
+			this.setState({page: 'last'})
+		}
+		if(newPage === 'next'){
+			if(page === 'first'){
+				this.setState({page: 1})
+			}else{
+				if(page+1 < Math.floor(games.length / 50))
+					this.setState({page: page+1})
+				else
+					this.setState({page: 'last'})
+			}
+		}
+		if(newPage === 'previous'){
+			if(page==='last'){
+				let p = Math.floor(games.length / 50);
+				this.setState({page: p-1})
+			}
+			else{
+				this.setState({page: page-1})
+			}
+		}
+		console.log(this.state.page)
+	}
+
 	//route manager
 	onRouteChange = (route) => {
 		if(route === 'singout'){
@@ -137,7 +181,7 @@ class App extends Component {
 	}
 
 	render(){
-		const {games, searchfield, height, route, isSignedIn, user} = this.state;
+		const {games, searchfield, height, route, isSignedIn, user, page} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
@@ -146,6 +190,35 @@ class App extends Component {
 		const filetrGamesInCart = games.filter(game =>{
 			return user.cart.includes(game._id);
 		})
+
+		let fromPage = () =>{
+			if(page==='first'){
+				return 0;
+			}
+			if(page==='last'){
+				return(games.length - games.length%50);
+			}
+			if(Number.isInteger(page)){
+				return page*50;
+			}
+			return 0;
+		}
+
+		let toPage = () =>{
+			if(page==='first'){
+				if(games.length < 50){
+					return games.length;
+				}
+				return 50;
+			}
+			if(page==='last'){
+				return games.length;
+			}
+			if(Number.isInteger(page)){
+				return (page+1)*50;
+			}
+			return games.length;
+		}
 
 		return (
 			<div className="App">
@@ -162,10 +235,20 @@ class App extends Component {
 			    		!games.length ?
 			    		<h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 					      	LOADING
-					    </h1> :
-					    <Scroll height={height}>
-					      	<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded} route={route} from={0} to={games.length}/>
-					    </Scroll>
+						</h1> :
+						<div>
+							<Scroll height={height}>
+								<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded}
+											route={route} from={fromPage()} to={games.length}/>
+							</Scroll>
+							<div style={{display:'flex', flexDirection:'row', justifyContent: ' center'}}>
+								<ArrowButton arrowCode='first' page={page} changePage={this.changePage}/>
+								<ArrowButton arrowCode='previous' page={page} changePage={this.changePage}/>
+								<div>    </div>
+								<ArrowButton arrowCode='next' page={page} changePage={this.changePage}/>
+								<ArrowButton arrowCode='last' page={page} changePage={this.changePage}/>
+							</div>
+						</div>
 			    	}
 			    </div> : 
 			    route === 'cart' ?
