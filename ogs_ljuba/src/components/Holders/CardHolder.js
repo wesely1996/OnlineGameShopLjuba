@@ -6,7 +6,6 @@ import GameCardCart from '../Cards/GameCardCart';
 const CardHolder = ({Games, AllGamesInCart, OrderAction, route, from, to}) => {
 
 	const number = (game) =>{
-		console.log(game, AllGamesInCart);
 		const index = AllGamesInCart.findIndex(x => x.orderId === game._id);
 		return AllGamesInCart[index].num;
 	}

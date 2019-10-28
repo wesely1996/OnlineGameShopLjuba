@@ -111,7 +111,6 @@ class App extends Component {
 				this.setState({page: page-1})
 			}
 		}
-		console.log(this.state.page)
 	}
 
 	//route manager
@@ -155,11 +154,9 @@ class App extends Component {
 		})
 		.then(response => response.json())
 		.then(cart => {
-			console.log(cart)
 			this.setState({
 			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
-			console.log(this.state.user)
 		})
 	}
 
@@ -190,7 +187,6 @@ class App extends Component {
 
 		const filetrGamesInCart = games.filter(game =>{
 			if(user.cart.find(x => x.orderId === game._id)){
-				console.log(game);
 				return true;
 			}
 			return false;
