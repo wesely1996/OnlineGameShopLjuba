@@ -97,7 +97,7 @@ MongoClient.connect(url, (err, db) => {
             if(user._id == userId){
               console.log(users.update(
                 {"_id": user._id},
-                { $addToSet: { "cart" : orderId } },
+                { $push: { "cart" : orderId } },
                 {multi: true,
                 useNewUrlParser: true}, 
                 function(err){
@@ -113,17 +113,32 @@ MongoClient.connect(url, (err, db) => {
   })
 
   //CancelItem(userID, orderID) => error | new cart
-  app.patch('/cancelItem',(req,res)=>{
-    const {userId,orderId} = req.body;
-    users.find(userId).toArray((err,result)=>{
-      if(err)throw err;
-      let count = Object.keys(result).length;
-      if(count==0){
-        res.status(400).json('no user');
-      }
-      delete result[0].cart[orderId];
-      res.json(result[0].cart);
-    })
+  app.put('/cancelItem',(req,res)=>{
+    const {userId,orderId}=req.body;
+      users.find().toArray((err,result)=>{
+        if(err) throw err;
+        let count = result.length;
+        if(count==0){
+          res.status(400).json(['no user']);
+        }
+        else {
+          result.forEach(user=>{
+            if(user._id == userId){
+                console.log(users.update(
+                {"_id": user._id},
+                { $pull: { "cart" : orderId } },
+                {multi: true,
+                useNewUrlParser: true}, 
+                function(err){
+                    console.log(err);
+                }
+             ))
+             user.cart.push(orderId);
+             res.json(user.cart)
+            }
+          })
+        }
+      })  
   })
 
   //Order(userId) => error | new orders
