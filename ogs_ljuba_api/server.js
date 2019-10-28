@@ -28,12 +28,6 @@ MongoClient.connect(url, (err, db) => {
         users.insertOne(myUser, (err, result) => {
 		      if (err) throw err;
 		      console.log("1 document inserted (user)");
-		  
-		      let myOrders = {UserId:result.insertedId, Orders:[]}
-		      dbo.collection("Orders").insertOne(myOrders,(err) => {
-			      if(err) throw err;
-			      console.log("1 document inserted (orders)")
-		      })
 		      res.status(201).json("User Created");
         })
       }
@@ -55,20 +49,9 @@ MongoClient.connect(url, (err, db) => {
 			res.status(401).status('Wrong password');
 		  }
 		  else{
-			  	dbo.collection("Orders").find({"UserId" : result[0]._id}).toArray((err, result2) => {
-					if(err) throw err;
-					if(result2){
             let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
 						res.json(user);
-					}
-					else{
-						res.status(404).json("Missing orders");
-					}
-		  		})
 			}
-      }
-      else{
-        res.status(401).json("Email doesnt exist!");
       }
     });
   })
@@ -95,17 +78,38 @@ MongoClient.connect(url, (err, db) => {
         else {
           result.forEach(user=>{
             if(user._id == userId){
-              console.log(users.update(
+              let num = null;
+              for (var i=0; i < user.cart.length; i++) {
+                if (user.cart[i].orderId === orderId) {
+                  num = user.cart[i].num;
+                }
+              }
+              if(num == null){ num = 1;}
+              else  {num = num+1;}
+              console.log(num);
+              if(num == 1){
+              console.log(users.updateOne(
                 {"_id": user._id},
-                { $push: { "cart" : orderId } },
+                { $push: { "cart" : {orderId , num } } },
                 {multi: true,
                 useNewUrlParser: true}, 
                 function(err){
                     console.log(err);
                 }
-             ))
-             user.cart.push(orderId);
-             res.json(user.cart)
+              ))
+              }
+              else{
+                  console.log(users.updateOne(
+                  {"_id": user._id,'cart.orderId':orderId},
+                  { $set: { 'cart.$.num' :  num  } },
+                  {multi: true,
+                  useNewUrlParser: true}, 
+                  function(err){
+                    console.log(err);
+                  }
+                )) 
+              }
+             res.json(user.cart);
             }
           })
         }
@@ -124,7 +128,7 @@ MongoClient.connect(url, (err, db) => {
         else {
           result.forEach(user=>{
             if(user._id == userId){
-                console.log(users.update(
+                console.log(users.updateOne(
                 {"_id": user._id},
                 { $pull: { "cart" : orderId } },
                 {multi: true,
@@ -144,6 +148,7 @@ MongoClient.connect(url, (err, db) => {
   //Order(userId) => error | new orders
   app.put('/order',(req,res)=>{
     const {userId}=req.body;
+    console.log("usao u /order");
     users.find(userId).toArray((err,result) => {
       if(err) throw err;
       let count = Object.keys(result).length;
