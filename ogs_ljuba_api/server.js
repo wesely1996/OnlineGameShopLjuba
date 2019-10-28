@@ -27,7 +27,14 @@ MongoClient.connect(url, (err, db) => {
       if(count==0){
         users.insertOne(myUser, (err, result) => {
 		      if (err) throw err;
-		      console.log("1 document inserted (user)");
+          console.log("1 document inserted (user)");
+          
+          let myOrders = {UserId: result.insertedId, Orders:[]}
+          dbo.collection("Orders").insertOne(myOrders,(err) => {
+            if(err) throw err;
+            console.log("1 document inserted (orders")
+          })
+
 		      res.status(201).json("User Created");
         })
       }
@@ -44,15 +51,19 @@ MongoClient.connect(url, (err, db) => {
     users.find({"email":email}).toArray((err, result) => {
 	  if (err) throw err;
       let count = Object.keys(result).length;
-      if(count!=0){
-		  if(result[0].hash!=hash){
+		  if(count!=0 && result[0].hash!=hash){
 			res.status(401).status('Wrong password');
 		  }
 		  else{
+        dbo.collection("Orders").find({"UserId": result[0]._id}).toArray((err,result2)=>{
+          if(err) throw err;
+          if(result2){
+            
             let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
 						res.json(user);
+          }
+        })
 			}
-      }
     });
   })
 

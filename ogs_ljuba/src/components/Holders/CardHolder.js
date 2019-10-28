@@ -5,6 +5,12 @@ import GameCardCart from '../Cards/GameCardCart';
 
 const CardHolder = ({Games, AllGamesInCart, OrderAction, route, from, to}) => {
 
+	const number = (game) =>{
+		console.log(game, AllGamesInCart);
+		const index = AllGamesInCart.findIndex(x => x.orderId === game._id);
+		return AllGamesInCart[index].num;
+	}
+
 	return (
 		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
@@ -25,7 +31,7 @@ const CardHolder = ({Games, AllGamesInCart, OrderAction, route, from, to}) => {
 				Games.slice(0, Games.length).map((game, id) => {
 					return (
 						<GameCardCart 
-						aGiC = {AllGamesInCart}
+						number = {number(game)}
 						key={id} 
 						gameId={game._id}
 						imageLink={game.imageLink} 

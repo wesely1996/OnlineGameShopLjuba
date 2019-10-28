@@ -9,6 +9,7 @@ import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
+//import PopUp from '../../components/Notifications/PopUp';
 import './App.css';
 
 class App extends Component {
@@ -188,7 +189,11 @@ class App extends Component {
 		})
 
 		const filetrGamesInCart = games.filter(game =>{
-			return user.cart.includes(game._id);
+			if(user.cart.find(x => x.orderId === game._id)){
+				console.log(game);
+				return true;
+			}
+			return false;
 		})
 
 		let fromPage = () =>{
@@ -239,7 +244,7 @@ class App extends Component {
 						<div>
 							<Scroll height={height}>
 								<CardHolder Games={filteredGames} OrderAction={this.onOrderAdded}
-											route={route} from={fromPage()} to={games.length}/>
+											route={route} from={fromPage()} to={toPage()}/>
 							</Scroll>
 							<div style={{display:'flex', flexDirection:'row', justifyContent: ' center'}}>
 								<ArrowButton arrowCode='first' page={page} changePage={this.changePage}/>
@@ -276,7 +281,7 @@ class App extends Component {
 					    <div>
 							<Search searchChange={this.onSearchChange}/>
 						    <Scroll height={height}>
-								<OrderHolder Orders={user.orders}/>
+								<OrderHolder Orders={user.orders} AllGames={games}/>
 						    </Scroll>
 					    </div>
 			    	}
