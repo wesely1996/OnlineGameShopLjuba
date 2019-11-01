@@ -127,7 +127,7 @@ class App extends Component {
 	}
 	//move items from cart to orders
 	moveToOrders = () =>{
-      console.log("ok");
+      console.log("Confirm Button");
 		/*fetch('http://localhost:3000/order', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},

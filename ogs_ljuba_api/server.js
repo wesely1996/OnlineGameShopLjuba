@@ -169,7 +169,19 @@ MongoClient.connect(url, (err, db) => {
                     console.log(err);
                   }
              ))}
-             res.json(user.cart)
+
+              users.find({ '_id': user._id }).toArray((error1, result) => {
+                if (error1)
+                  throw error1;
+                if (result[0]) {
+                  console.log(result);
+                  console.log(result[0].cart);
+                  res.json(result[0].cart);
+                }
+                else {
+                  console.log("No user found 179");
+                }
+              })
             }
           })
         }

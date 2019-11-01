@@ -6,7 +6,7 @@ class GameCard extends React.Component{
 		const {number, gameId, imageLink, gameName, price, OrderAction} = this.props;
 
 		return(
-			<div className="f5 b card shadow-5 ba br4 bw1 grow pa1 tc ma2 bg-black-50 white">
+			<div className="f5 b card shadow-5 ba br4 bw1 pa1 tc ma2 bg-black-50 white">
 				<div style={{display: 'flex', justifyContent: 'flex-end'}}>
 					<div className="white f4 br-100"
 					style={{paddingLeft: '5px', paddingRight: '5px', paddingBottom: '2px', backgroundColor: 'rgba(176, 18, 7, .5)'}}>
