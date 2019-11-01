@@ -127,7 +127,8 @@ class App extends Component {
 	}
 	//move items from cart to orders
 	moveToOrders = () =>{
-		fetch('http://localhost:3000/order', {
+      console.log("ok");
+		/*fetch('http://localhost:3000/order', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
 			body: JSON.stringify({
@@ -139,8 +140,9 @@ class App extends Component {
 			this.setState({
 			  user: update(this.state.user, {cart: {$set: []}, orders: {$set: orders.sort()}})
 			})
+            
 			console.log(this.state.user)
-		})
+		})*/
 	}
 
 	onOrderAdded = (orderid) =>{

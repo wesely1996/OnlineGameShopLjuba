@@ -5,7 +5,7 @@ class GameCard extends React.Component{
 	render (){
 		const {gameId, imageLink, gameName, price, OrderAction} = this.props;
 		return(
-			<div className="f5 b card shadow-5 ba br4 bw1 grow pa1 tc ma2 bg-black-50 white">
+			<div className="f5 b card shadow-5 ba br4 bw1 pa1 tc ma2 bg-black-50 white">
 				<img alt={`${gameName}`} src={`${imageLink}`}/>
 				<p>{gameName}</p>
 				<p>{price}</p>

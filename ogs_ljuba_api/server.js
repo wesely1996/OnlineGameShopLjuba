@@ -50,7 +50,7 @@ MongoClient.connect(url, (err, db) => {
     let hash=md5(password);
     users.find({"email":email}).toArray((err, result) => {
 	  if (err) throw err;
-      let count = Object.keys(result).length;
+     let count = Object.keys(result).length;
 		  if(count!=0 && result[0].hash!=hash){
 			res.status(401).status('Wrong password');
 		  }
@@ -109,7 +109,7 @@ MongoClient.connect(url, (err, db) => {
                 }
               ))
               }
-              else{
+              else if (num<=5){
                   console.log(users.updateOne(
                   {"_id": user._id,'cart.orderId':orderId},
                   { $set: { 'cart.$.num' :  num  } },
@@ -120,7 +120,10 @@ MongoClient.connect(url, (err, db) => {
                   }
                 )) 
               }
-             res.json(user.cart);
+             users.find(user._id).toArray((err,result)=>{
+              if(err) throw err;
+               res.json(result[0].cart);
+             })
             }
           })
         }
@@ -138,17 +141,34 @@ MongoClient.connect(url, (err, db) => {
         }
         else {
           result.forEach(user=>{
+            for (var i=0; i < user.cart.length; i++) {
+                if (user.cart[i].orderId === orderId) {
+                  num = user.cart[i].num;
+                }
+            }
+
             if(user._id == userId){
+              num = num - 1;
+              if(num <=0){
                 console.log(users.updateOne(
                 {"_id": user._id},
-                { $pull: { "cart" : orderId } },
+                { $pull: { "cart" :{ "orderId" : orderId} } },
                 {multi: true,
                 useNewUrlParser: true}, 
                 function(err){
+                   console.log(err);
+                }));
+              }
+              else{
+              console.log(users.updateOne(
+                  {"_id": user._id,'cart.orderId':orderId},
+                  { $set: { 'cart.$.num' :  num  } },
+                  {multi: true,
+                  useNewUrlParser: true}, 
+                  function(err){
                     console.log(err);
-                }
-             ))
-             user.cart.push(orderId);
+                  }
+             ))}
              res.json(user.cart)
             }
           })
@@ -168,9 +188,19 @@ MongoClient.connect(url, (err, db) => {
       }
       let stat="pending";
       let gameId = result[0].cart;
+      console.log(gameId);
       let mycart={userId,gameId,stat};
 	    dbo.collection("Orders").insertOne(mycart,(err,result) =>{
         if(err) throw err;
+          console.log(users.updateOne(
+                {"_id": user._id},
+                { $set: { "cart" : [] } },
+                {multi: true,
+                useNewUrlParser: true}, 
+                function(err){
+                  console.log(err);
+          }));
+
         console.log("1 document inserted in Orders");
       })
     })

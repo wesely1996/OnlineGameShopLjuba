@@ -1,2 +1,0 @@
-{"_id":{"$oid":"5db058ffce6d792ee0064894"},"UserId":{"$oid":"5db058ffce6d792ee0064893"},"Orders":[["5da32c8f8908133a20bff15a","pending"]]}
-{"_id":{"$oid":"5db204cbd181f52d6c75ca2b"},"UserId":{"$oid":"5db204cbd181f52d6c75ca2a"},"Orders":[]}
