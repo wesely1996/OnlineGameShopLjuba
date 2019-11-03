@@ -128,7 +128,7 @@ class App extends Component {
 	//move items from cart to orders
 	moveToOrders = () =>{
       console.log("Confirm Button");
-		/*fetch('http://localhost:3000/order', {
+		fetch('http://localhost:3000/order', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
 			body: JSON.stringify({
@@ -142,11 +142,11 @@ class App extends Component {
 			})
             
 			console.log(this.state.user)
-		})*/
+		})
 	}
 
 	onOrderAdded = (orderid) =>{
-		fetch('http://localhost:3000/addToCart', {
+      fetch('http://localhost:3000/addToCart', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
 			body: JSON.stringify({
@@ -264,9 +264,9 @@ class App extends Component {
 					    <div>
 						    <Scroll height={height}>
 						      	<CardHolder Games={filetrGamesInCart} AllGamesInCart={user.cart} OrderAction={this.onOrderRemoved} route={route}/>
-						    </Scroll>
-						    <ConfirmationButton OrderAction={this.moveToOrders}/>
-					    </div>
+					        </Scroll>
+                            <ConfirmationButton OrderAction={this.moveToOrders}/> 
+                      </div>
 			    	}
 				</div> :
 				route === 'userPage'?

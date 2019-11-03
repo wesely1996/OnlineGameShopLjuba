@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const bodyParser = require('body-parser');
 const md5 = require('md5')
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
@@ -120,10 +122,10 @@ MongoClient.connect(url, (err, db) => {
                   }
                 )) 
               }
-             users.find(user._id).toArray((err,result)=>{
+             setTimeout(function(){users.find(user._id).toArray((err,result)=>{
               if(err) throw err;
                res.json(result[0].cart);
-             })
+             })},50)
             }
           })
         }
@@ -170,7 +172,7 @@ MongoClient.connect(url, (err, db) => {
                   }
              ))}
 
-              users.find({ '_id': user._id }).toArray((error1, result) => {
+              setTimeout(function(){users.find({ '_id': user._id }).toArray((error1, result) => {
                 if (error1)
                   throw error1;
                 if (result[0]) {
@@ -181,7 +183,7 @@ MongoClient.connect(url, (err, db) => {
                 else {
                   console.log("No user found 179");
                 }
-              })
+              })},50)
             }
           })
         }
