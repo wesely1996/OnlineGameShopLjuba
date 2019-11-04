@@ -104,7 +104,7 @@ MongoClient.connect(url, (err, db) => {
                 { $push: { "cart" : {orderId , num } } },
                 {multi: true,
                 useNewUrlParser: true}, 
-                function(err){
+                (err)=>{
                     console.log(err);
                 }
               ))
@@ -115,12 +115,12 @@ MongoClient.connect(url, (err, db) => {
                   { $set: { 'cart.$.num' :  num  } },
                   {multi: true,
                   useNewUrlParser: true}, 
-                  function(err){
+                  (err)=>{
                     console.log(err);
                   }
                 )) 
               }
-             setTimeout(function(){users.find(user._id).toArray((err,result)=>{
+             setTimeout(()=>{users.find(user._id).toArray((err,result)=>{
               if(err) throw err;
                res.json(result[0].cart);
              })},50)
@@ -155,7 +155,7 @@ MongoClient.connect(url, (err, db) => {
                 { $pull: { "cart" :{ "orderId" : orderId} } },
                 {multi: true,
                 useNewUrlParser: true}, 
-                function(err){
+                (err)=>{
                    console.log(err);
                 }));
               }
@@ -165,12 +165,12 @@ MongoClient.connect(url, (err, db) => {
                   { $set: { 'cart.$.num' :  num  } },
                   {multi: true,
                   useNewUrlParser: true}, 
-                  function(err){
+                  (err)=>{
                     console.log(err);
                   }
              ))}
 
-              setTimeout(function(){users.find({ '_id': user._id }).toArray((error1, result) => {
+              setTimeout(()=>{users.find({ '_id': user._id }).toArray((error1, result) => {
                 if (error1)
                   throw error1;
                 if (result[0]) {
@@ -192,33 +192,50 @@ MongoClient.connect(url, (err, db) => {
   app.put('/order',(req,res)=>{
     const {userId}=req.body;
     console.log("usao u /order");
-    users.find(userId).toArray((err,result) => {
+    users.find({"_id" : userId}).toArray((err, result)=>{
       if(err) throw err;
-      let count = Object.keys(result).length;
-      if(count==0){
-        res.status(400).json('no user');
-      }
-      let stat="pending";
-      let gameId = result[0].cart;
-      console.log(gameId);
-      let mycart={userId,gameId,stat};
-	    dbo.collection("Orders").insertOne(mycart,(err,result) =>{
-        if(err) throw err;
-          console.log(users.updateOne(
-                {"_id": user._id},
-                { $set: { "cart" : [] } },
-                {multi: true,
-                useNewUrlParser: true}, 
-                function(err){
-                  console.log(err);
-          }));
 
-        console.log("1 document inserted in Orders");
-      })
+      if(result[0]){
+        let status = "pending";
+
+        result[0].cart.forEach(order =>{
+          users.updateOne(
+            {"_id": userId},
+            { $pull: { "cart" :{ "orderId" : order.orderId} } },
+            {multi: true,
+            useNewUrlParser: true}, 
+            (err)=>{
+               console.log(err);
+            })
+
+            let orderId = order.orderId;
+
+            dbo.collection("Orders").updateOne(
+              {"UserId": userId},
+              { $push: { "Orders" : {orderId , status} } },
+              {multi: true,
+              useNewUrlParser: true}, 
+              (err)=>{
+                  console.log(err);
+              }
+            )
+        })
+        
+        setTimeout(()=>{dbo.collection("Orders").find({ 'UserId': userId }).toArray((error1, result1) => {
+          if (error1)
+            throw error1;
+          if (result1[0]) {
+            res.json(result1[0].Orders);
+          }
+          else {
+            console.log("No user found 179");
+          }
+        })},50)
+      }
     })
   })
 });
 
 app.listen(3000, () => {
 	console.log("app is running on port 3000");
-})
+});

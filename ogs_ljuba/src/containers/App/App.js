@@ -9,7 +9,6 @@ import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
-//import PopUp from '../../components/Notifications/PopUp';
 import './App.css';
 
 class App extends Component {
@@ -127,7 +126,6 @@ class App extends Component {
 	}
 	//move items from cart to orders
 	moveToOrders = () =>{
-      console.log("Confirm Button");
 		fetch('http://localhost:3000/order', {
 			method: 'put',
 			headers: {'Content-type':'application/json'},
@@ -140,8 +138,6 @@ class App extends Component {
 			this.setState({
 			  user: update(this.state.user, {cart: {$set: []}, orders: {$set: orders.sort()}})
 			})
-            
-			console.log(this.state.user)
 		})
 	}
 
@@ -176,7 +172,6 @@ class App extends Component {
 			this.setState({
 			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
-			console.log(this.state.user)
 		})
 	}
 
