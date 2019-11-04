@@ -4,7 +4,7 @@ const md5 = require('md5')
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://localhost:27017/";
-
+const ObjectId = require('mongodb').ObjectID;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -47,23 +47,23 @@ MongoClient.connect(url, (err, db) => {
   //SignIn(email, password) => error | user: {id, name , email, cart, orders}
   app.post('/signin', (req, res)=>{
 	  const {email, password} = req.body;
-    let hash=md5(password);
-    users.find({"email":email}).toArray((err, result) => {
-	  if (err) throw err;
-     let count = Object.keys(result).length;
+      let hash=md5(password);
+      users.find({"email":email}).toArray((err, result) => {
+	    if (err) throw err;
+        let count = Object.keys(result).length;
 		  if(count!=0 && result[0].hash!=hash){
 			res.status(401).status('Wrong password');
 		  }
-		  else{
-        dbo.collection("Orders").find({"UserId": result[0]._id}).toArray((err,result2)=>{
-          if(err) throw err;
-          if(result2){
+		  else if(count!=0){
+            dbo.collection("Orders").find({"UserId": result[0]._id}).toArray((err,result2)=>{
+              if(err) throw err;
+              if(result2){
             
-            let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
+                let user = {id: result[0]._id, name: result[0].name, email: result[0].email, cart: result[0].cart, orders: result2[0].Orders};
 						res.json(user);
-          }
-        })
-			}
+              }
+            })
+		  }
     });
   })
 
@@ -192,12 +192,32 @@ MongoClient.connect(url, (err, db) => {
   app.put('/order',(req,res)=>{
     const {userId}=req.body;
     console.log("usao u /order");
-    users.find({"_id" : userId}).toArray((err, result)=>{
+    users.find({"_id" : ObjectId(userId)}).toArray((err, result)=>{
       if(err) throw err;
+      let count = Object.keys(result).length;
+      console.log(count);
+      if(count==1){
+        let stat = "pending";
+        let cart1=result[0].cart; 
+        dbo.collection("Orders").updateOne(
+          {"UserId": userId},
+          { $push: { "Orders" : {cart1 , stat} } },
+          {multi: true,
+          useNewUrlParser: true}, 
+          (err)=>{
+               console.log(err);
+          }
+        )
+        users.updateOne(
+          {"_id": userId},
+          { $set: { "cart" : [] } },
+          {multi: true,
+          useNewUrlParser: true}, 
+            (err)=>{
+               console.log(err);
+          })
 
-      if(result[0]){
-        let status = "pending";
-
+/*
         result[0].cart.forEach(order =>{
           users.updateOne(
             {"_id": userId},
@@ -219,9 +239,9 @@ MongoClient.connect(url, (err, db) => {
                   console.log(err);
               }
             )
-        })
+        })*/
         
-        setTimeout(()=>{dbo.collection("Orders").find({ 'UserId': userId }).toArray((error1, result1) => {
+        setTimeout(()=>{dbo.collection("Orders").find({ 'UserId': ObjectId(userId) }).toArray((error1, result1) => {
           if (error1)
             throw error1;
           if (result1[0]) {
