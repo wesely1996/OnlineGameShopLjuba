@@ -1,13 +1,13 @@
-{"_id":{"$oid":"5da32b708908133a20bff156"},"id":"0","imageLink":"/images/Logo.png","gameName":"World of Warcraft III","price":"1.499 din"}
-{"_id":{"$oid":"5da32c098908133a20bff158"},"id":"1","imageLink":"/images/Logo.png","gameName":"Counter-Strike GO","price":"3.000 din"}
-{"_id":{"$oid":"5da32c558908133a20bff159"},"id":"2","imageLink":"/images/Logo.png","gameName":"RUSE","price":"2.399 din"}
-{"_id":{"$oid":"5da32c8f8908133a20bff15a"},"id":"3","imageLink":"/images/Logo.png","gameName":"FIFA Manager 20","price":"5.999 din"}
-{"_id":{"$oid":"5da32d4b8908133a20bff15b"},"id":"4","imageLink":"/images/Logo.png","gameName":"KingKong","price":"599 din"}
-{"_id":{"$oid":"5da32d988908133a20bff15c"},"id":"5","imageLink":"/images/Logo.png","gameName":"Lord of the Rings","price":"749 din"}
-{"_id":{"$oid":"5da32dd58908133a20bff15d"},"id":"6","imageLink":"/images/Logo.png","gameName":"Wargame: Red Dragon","price":"3.499 din"}
-{"_id":{"$oid":"5da32e0b8908133a20bff15e"},"id":"7","imageLink":"/images/Logo.png","gameName":"Splinter Cell Conviction","price":"999 din"}
-{"_id":{"$oid":"5da32e378908133a20bff15f"},"id":"8","imageLink":"/images/Logo.png","gameName":"Draw With Jazza","price":"1.499 din"}
-{"_id":{"$oid":"5da32e608908133a20bff160"},"id":"9","imageLink":"/images/Logo.png","gameName":"Rome Total War","price":"299 din"}
-{"_id":{"$oid":"5da32e868908133a20bff161"},"id":"10","imageLink":"/images/Logo.png","gameName":"Europa Universalis IV","price":"1.299 din"}
-{"_id":{"$oid":"5da32eb68908133a20bff162"},"id":"11","imageLink":"/images/Logo.png","gameName":"Caesar VI","price":"3.999 din"}
-{"_id":{"$oid":"5da32eec8908133a20bff163"},"id":"12","imageLink":"/images/Logo.png","gameName":"Counter-Strike Source","price":"689 din"}
+{"_id":{"$oid":"5da32b708908133a20bff156"},"id":"0","imageLink":"/images/Logo.png","gameName":"World of Warcraft III","price":{"$numberInt":"1499"}}
+{"_id":{"$oid":"5da32c098908133a20bff158"},"id":"1","imageLink":"/images/Logo.png","gameName":"Counter-Strike GO","price":{"$numberInt":"3000"}}
+{"_id":{"$oid":"5da32c558908133a20bff159"},"id":"2","imageLink":"/images/Logo.png","gameName":"RUSE","price":{"$numberInt":"2399"}}
+{"_id":{"$oid":"5da32c8f8908133a20bff15a"},"id":"3","imageLink":"/images/Logo.png","gameName":"FIFA Manager 20","price":{"$numberInt":"5999"}}
+{"_id":{"$oid":"5da32d4b8908133a20bff15b"},"id":"4","imageLink":"/images/Logo.png","gameName":"KingKong","price":{"$numberInt":"599"}}
+{"_id":{"$oid":"5da32d988908133a20bff15c"},"id":"5","imageLink":"/images/Logo.png","gameName":"Lord of the Rings","price":{"$numberInt":"749"}}
+{"_id":{"$oid":"5da32dd58908133a20bff15d"},"id":"6","imageLink":"/images/Logo.png","gameName":"Wargame: Red Dragon","price":{"$numberInt":"3499"}}
+{"_id":{"$oid":"5da32e0b8908133a20bff15e"},"id":"7","imageLink":"/images/Logo.png","gameName":"Splinter Cell Conviction","price":{"$numberInt":"999"}}
+{"_id":{"$oid":"5da32e378908133a20bff15f"},"id":"8","imageLink":"/images/Logo.png","gameName":"Draw With Jazza","price":{"$numberInt":"1499"}}
+{"_id":{"$oid":"5da32e608908133a20bff160"},"id":"9","imageLink":"/images/Logo.png","gameName":"Rome Total War","price":{"$numberInt":"299"}}
+{"_id":{"$oid":"5da32e868908133a20bff161"},"id":"10","imageLink":"/images/Logo.png","gameName":"Europa Universalis IV","price":{"$numberInt":"1299"}}
+{"_id":{"$oid":"5da32eb68908133a20bff162"},"id":"11","imageLink":"/images/Logo.png","gameName":"Caesar VI","price":{"$numberInt":"3999"}}
+{"_id":{"$oid":"5da32eec8908133a20bff163"},"id":"12","imageLink":"/images/Logo.png","gameName":"Counter-Strike Source","price":{"$numberInt":"689"}}
