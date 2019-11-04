@@ -3,9 +3,12 @@ import OrderCard from '../Cards/OrderCard';
 
 const OrderHolder = ({Orders, AllGames}) => {
 
-	const nameOfGame = (id) =>{
-		const index = AllGames.findIndex(x => x._id === id);
-		return AllGames[index].gameName;
+	const nameOfGame = (order) =>{
+		let NandN = [];
+		order.map(order=>{
+			NandN.push([AllGames[AllGames.findIndex(x => x._id === order.orderId)].gameName, order.num]);
+		})
+		return NandN;
 	}
 
 	return (
@@ -15,9 +18,8 @@ const OrderHolder = ({Orders, AllGames}) => {
 					return (
 						<OrderCard 
 						key={id} 
-						orderName = {nameOfGame(order[0])} 
-						orderNumber = {order[1]}
-						orderStatus = {order[2]}
+						orderNameAndNumber = {nameOfGame(order.order)}
+						orderStatus = {order.stat}
 						/>
 					);
 				})

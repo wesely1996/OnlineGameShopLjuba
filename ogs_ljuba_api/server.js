@@ -199,10 +199,10 @@ MongoClient.connect(url, (err, db) => {
       console.log(count);
       if(count==1){
         let stat = "pending";
-        let cart1=result[0].cart; 
+        let order=result[0].cart; 
         dbo.collection("Orders").updateOne(
           {"UserId": uId},
-          { $push: { "Orders" : {cart1 , stat} } },
+          { $push: { "Orders" : {order , stat} } },
           {multi: true,
           useNewUrlParser: true}, 
           (err)=>{
@@ -217,30 +217,6 @@ MongoClient.connect(url, (err, db) => {
             (err)=>{
                console.log(err);
           })
-
-/*
-        result[0].cart.forEach(order =>{
-          users.updateOne(
-            {"_id": userId},
-            { $pull: { "cart" :{ "orderId" : order.orderId} } },
-            {multi: true,
-            useNewUrlParser: true}, 
-            (err)=>{
-               console.log(err);
-            })
-
-            let orderId = order.orderId;
-
-            dbo.collection("Orders").updateOne(
-              {"UserId": userId},
-              { $push: { "Orders" : {orderId , status} } },
-              {multi: true,
-              useNewUrlParser: true}, 
-              (err)=>{
-                  console.log(err);
-              }
-            )
-        })*/
         
         setTimeout(()=>{dbo.collection("Orders").find({ 'UserId': uId }).toArray((error1, result1) => {
           if (error1)

@@ -2,19 +2,25 @@ import React from 'react';
 
 class OrderCard extends React.Component{
 	render (){
-		const {orderName, orderNumber, orderStatus} = this.props;
+		const {orderNameAndNumber, orderStatus} = this.props;
 		return(
             <div 
             className="f5 b card shadow-5 ba br4 bw1 grow pa1 tc ma2 bg-black-50 white"
-            style={{display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap',
+            style={{display: 'flex', justifyContent: 'space-evenly', flexWrap: 'wrap',
                 minWidth: '70%'}}
             >
-				<div className="b-white b-solid">Game Name: </div>
-				<div className="b-white b-solid">{orderName} </div>
-				<div className="b-white b-solid">Quantity: </div>
-				<div className="b-white b-solid">{orderNumber} </div>
-				<div className="b-white b-solid">Status: </div>
-				<div className="b-white b-solid">{orderStatus}</div>
+				<div style={{display: 'flex', flexDirection: 'column'}}>
+				{
+					orderNameAndNumber.map(order => {
+						return(
+							<div className="b-white b-solid">
+								<div>Game name:		{order[0]} x{order[1]}</div>
+							</div>
+						)
+					})
+				}
+				</div>
+				<div className="b-white b-solid" style={{alignSelf:'center'}}>Status: {orderStatus}</div>
 			</div>
 		);
 	}
