@@ -15,7 +15,7 @@ class GameCard extends React.Component{
 				</div>
 				<img alt={`${gameName}`} src={`${imageLink}`}/>
 				<p>{gameName}</p>
-				<p>{price}</p>
+				<p>{price} din</p>
 				<button 
 				onClick={() => OrderAction(gameId)}
 				type="button" 
