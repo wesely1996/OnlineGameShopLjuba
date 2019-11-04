@@ -1,10 +1,13 @@
 import React from 'react';
 import './Scroll.css';
 
-const Scroll = ({children, height}) => {
+const Scroll = ({children, height, route}) => {
+
+	const buttonSize = (height - 20 - (route === "cart" ? 110 : 87))*0.87 + 'px';
+
 	const divStyle = {
 		overflowY: 'scroll',
-		height: (height - 20 - 87 - 57)*0.87 + 'px'
+		height: buttonSize,
 	};
 
 	return (

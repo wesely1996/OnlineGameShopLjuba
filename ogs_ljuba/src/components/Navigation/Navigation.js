@@ -3,9 +3,10 @@ import Cart from './CartButton/Cart';
 import Home from './HomeButton/Home';
 import Logo from '../Logo/Logo';
 import UserIcon from './UserButton/UserIcon';
+import {isMobile} from 'react-device-detect';
 
 const Navigation = ({onRouteChange, isSignedIn, route}) => {
-	if(isSignedIn){
+	if(isSignedIn && !isMobile){
 		return (
 			<nav style={{display: 'flex', justifyContent: 'space-between'}}>
 				<Logo/>
@@ -35,7 +36,7 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 			</nav>
 		);
 	}
-	else{
+	else if(!isSignedIn){
 		return (
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<div style={{display: 'flex', flexDirection: 'row'}}>
@@ -58,6 +59,12 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 				</div>
 			</nav>
 		);
+	}
+	else {
+		return(
+		<nav className='w-100'>
+			<Logo/>
+		</nav>)
 	}
 }
 

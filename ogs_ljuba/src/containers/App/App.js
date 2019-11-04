@@ -9,6 +9,7 @@ import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
+
 import './App.css';
 
 class App extends Component {
@@ -230,7 +231,7 @@ class App extends Component {
 
 		return (
 			<div className="App" style={{width: null, height: null}}>
-		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route}/>
+		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route} />
 		      {
 			    route === 'register' ?
 			    <Registration onRouteChange = {this.onRouteChange} loadUser={this.loadUser}/> :
@@ -267,7 +268,7 @@ class App extends Component {
 					      	LOADING
 					    </h1> :
 					    <div>
-						    <Scroll height={height}>
+						    <Scroll height={height} route={route}>
 						      	<CardHolder Games={filetrGamesInCart} AllGamesInCart={user.cart} OrderAction={this.onOrderRemoved} route={route}/>
 					        </Scroll>
                             <ConfirmationButton OrderAction={this.moveToOrders} cartPrice={this.cartPriceChange}/> 
@@ -283,7 +284,7 @@ class App extends Component {
 					    </h1> :
 					    <div>
 							<Search searchChange={this.onSearchChange}/>
-						    <Scroll height={height}>
+						    <Scroll height={height} route={route}>
 								<OrderHolder Orders={user.orders} AllGames={games}/>
 						    </Scroll>
 					    </div>
