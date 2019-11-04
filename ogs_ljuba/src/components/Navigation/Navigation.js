@@ -3,10 +3,11 @@ import Cart from './CartButton/Cart';
 import Home from './HomeButton/Home';
 import Logo from '../Logo/Logo';
 import UserIcon from './UserButton/UserIcon';
-import {isMobile} from 'react-device-detect';
+//import {isMobile} from 'react-device-detect';
+//import './Navigation.css';
 
 const Navigation = ({onRouteChange, isSignedIn, route}) => {
-	if(isSignedIn && !isMobile){
+	if(isSignedIn){
 		return (
 			<nav style={{display: 'flex', justifyContent: 'space-between'}}>
 				<Logo/>
@@ -36,7 +37,7 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 			</nav>
 		);
 	}
-	else if(!isSignedIn){
+	else {//if(!isSignedIn){
 		return (
 			<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<div style={{display: 'flex', flexDirection: 'row'}}>
@@ -60,12 +61,38 @@ const Navigation = ({onRouteChange, isSignedIn, route}) => {
 			</nav>
 		);
 	}
-	else {
+	/*else {
 		return(
-		<nav className='w-100'>
+		<nav style={{display: 'flex', justifyContent: 'flex-end'}}>
 			<Logo/>
+			<div class="dropdown">
+				<button class="dropbtn">|||</button>
+				<div class="dropdown-content">
+				<div 
+					style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+					{
+						route==='cart' ?
+						<Home onRouteChange = {onRouteChange}/> :
+						<Cart onRouteChange = {onRouteChange}/>
+					}
+					</div>
+					<div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+						{
+							route === 'userPage' ?
+							<Home onRouteChange = {onRouteChange}/> :
+							<UserIcon onRouteChange = {onRouteChange}/>
+						}
+					</div>
+					<div
+					style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}
+					onClick={() => onRouteChange('singout')}
+					className='f4 link dim white underline pa2 ma1 pointer b grow'>
+						<p>Sign Out</p>
+					</div>
+				</div>
+			</div>
 		</nav>)
-	}
+	}*/
 }
 
 export default Navigation;
