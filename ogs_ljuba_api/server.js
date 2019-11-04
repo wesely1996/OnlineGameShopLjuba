@@ -197,7 +197,7 @@ MongoClient.connect(url, (err, db) => {
       if(err) throw err;
       let count = Object.keys(result[0].cart).length;
       console.log(count);
-      if(count==1){
+      if(count>=1 && count<=50){
         let stat = "pending";
         let order=result[0].cart; 
         dbo.collection("Orders").updateOne(
