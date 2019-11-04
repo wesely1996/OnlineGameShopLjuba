@@ -195,7 +195,7 @@ MongoClient.connect(url, (err, db) => {
     const uId=ObjectId(userId);
     users.find({"_id" : uId}).toArray((err, result)=>{
       if(err) throw err;
-      let count = Object.keys(result).length;
+      let count = Object.keys(result[0].cart).length;
       console.log(count);
       if(count==1){
         let stat = "pending";

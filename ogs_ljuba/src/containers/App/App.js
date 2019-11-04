@@ -21,7 +21,6 @@ class App extends Component {
 			route: 'signin',
 			isSignedIn: false,
 			page: '',
-			cartPrice: 0,
 			user: {
 				id: {},
 				name: '',
@@ -180,15 +179,14 @@ class App extends Component {
 		let price = 0;
 
 		this.state.user.cart.map(game => {
-			//console.log(this.state.games[this.state.games.findIndex(x => x._id === game.orderId)].price)
-			console.log(game)
+			price += this.state.games[this.state.games.findIndex(x => x._id === game.orderId)].price;
 		})
 
-		this.setState({cartPrice : price});
+		return price;
 	}
 
 	render(){
-		const {games, searchfield, height, route, isSignedIn, user, page, cartPrice} = this.state;
+		const {games, searchfield, height, route, isSignedIn, user, page} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
@@ -231,7 +229,7 @@ class App extends Component {
 		}
 
 		return (
-			<div className="App">
+			<div className="App" style={{width: null, height: null}}>
 		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route}/>
 		      {
 			    route === 'register' ?
@@ -272,7 +270,7 @@ class App extends Component {
 						    <Scroll height={height}>
 						      	<CardHolder Games={filetrGamesInCart} AllGamesInCart={user.cart} OrderAction={this.onOrderRemoved} route={route}/>
 					        </Scroll>
-                            <ConfirmationButton OrderAction={this.moveToOrders} cartPrice={cartPrice}/> 
+                            <ConfirmationButton OrderAction={this.moveToOrders} cartPrice={this.cartPriceChange}/> 
                       </div>
 			    	}
 				</div> :
