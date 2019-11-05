@@ -7,6 +7,7 @@ const OrderHolder = ({Orders, AllGames}) => {
 		let NandN = [];
 		order.map(order=>{
 			NandN.push([AllGames[AllGames.findIndex(x => x._id === order.orderId)].gameName, order.num]);
+			return 0;
 		})
 		return NandN;
 	}

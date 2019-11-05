@@ -10,6 +10,7 @@ import ConfirmationButton from '../../components/Buttons/CartConfirmButton/Confi
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
 import Chat from '../../components/Chat/Chat';
+import Notification from '../../components/Notifications/Notification';
 
 import './App.css';
 
@@ -23,6 +24,8 @@ class App extends Component {
 			route: 'signin',
 			isSignedIn: false,
 			page: '',
+			notification: false,
+			massage: "",
 			user: {
 				id: {},
 				name: '',
@@ -114,6 +117,19 @@ class App extends Component {
 		}
 	}
 
+	showNotification = (massage) => {
+		this.setState({notification : true, massage : massage})
+		this.waitFunc(this.removeNotification);
+	}
+
+	removeNotification = () =>{
+		this.setState({notification : false, massage : ''})
+	}
+
+	waitFunc = (func) =>{
+		setTimeout(()=>{func()}, 1500);
+	}
+
 	//route manager
 	onRouteChange = (route) => {
 		if(route === 'singout'){
@@ -141,6 +157,7 @@ class App extends Component {
 			  user: update(this.state.user, {cart: {$set: []}, orders: {$set: orders.sort()}})
 			})
 		})
+		this.showNotification("Sent order.")
 	}
 
 	onOrderAdded = (orderid) =>{
@@ -158,6 +175,7 @@ class App extends Component {
 			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
 		})
+		this.showNotification("Game added to cart.")
 	}
 
 	onOrderRemoved = (orderid) =>{
@@ -175,6 +193,7 @@ class App extends Component {
 			  user: update(this.state.user, {cart: {$set: cart.sort()}})
 			})
 		})
+		this.showNotification("Game removed from cart.")
 	}
 
 	cartPriceChange = () =>{
@@ -182,13 +201,14 @@ class App extends Component {
 
 		this.state.user.cart.map(game => {
 			price += this.state.games[this.state.games.findIndex(x => x._id === game.orderId)].price;
+			return 0;
 		})
 
 		return price;
 	}
 
 	render(){
-		const {games, searchfield, height, route, isSignedIn, user, page} = this.state;
+		const {games, searchfield, height, route, isSignedIn, user, page, notification, massage} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
@@ -232,8 +252,11 @@ class App extends Component {
 
 		return (
 			<div className="App" style={{width: null, height: null}}>
-		      <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route} />
-		      {
+		    	<Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} route={route} />
+				{
+				  notification ? <Notification massage={massage}/> : <div></div>
+				}
+			  {
 			    route === 'register' ?
 			    <Registration onRouteChange = {this.onRouteChange} loadUser={this.loadUser}/> :
 			    route === 'signin' ?
