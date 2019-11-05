@@ -40,10 +40,13 @@ class SignIn extends React.Component {
 		const {onRouteChange} = this.props;
 		return (
 			<div>
-				<div style={{position: 'relative', top: '4.2em'}}>
-					<Logo/>
-				</div>
-				<article className="w-30 center b--transparent br3 pa3 pa3-ns mv4 ba bw3 bg-black-40 shadow-3">
+				<article className="w-30 center b--transparent br3 pa3 pa3-ns mv4 ba bw3 bg-black-40 shadow-3"
+					style={{minWidth:'250px'}}>
+					<div style={{position: 'absolute', width: '26%'}}>
+						<div style={{position: 'relative', top: '-60px', right: '0', minWidth:'205px'}}>
+							<Logo/>
+						</div>
+					</div>
 					<main className="pa3 white-80">
 					<div className="measure">
 						<fieldset id="sign_up" className="ba b--transparent ph0 mh0">

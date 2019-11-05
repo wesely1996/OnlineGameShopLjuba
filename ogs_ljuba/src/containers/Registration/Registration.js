@@ -45,10 +45,13 @@ class Registration extends React.Component{
 	render(){
 		return (
 			<div>
-				<div style={{position: 'relative', top: '3em'}}>
-					<Logo/>
-				</div>
-				<article className="w-30 center b--transparent br3 pa3 pa3-ns mv2 ba bw3 bg-black-40 shadow-3">
+				<article className="w-30 center b--transparent br3 pa3 pa3-ns mv4 ba bw3 bg-black-40 shadow-3"
+					style={{minWidth:'250px'}}>
+					<div style={{position: 'absolute', width: '26%'}}>
+						<div style={{position: 'relative', top: '-60px', right: '0', minWidth:'205px'}}>
+							<Logo/>
+						</div>
+					</div>
 					<main className="pa2 white-80">
 					<div action="sign-up_submit" method="get" acceptCharset="utf-8">
 						<fieldset id="sign_up" className="ba b--transparent ph0 mh0">
