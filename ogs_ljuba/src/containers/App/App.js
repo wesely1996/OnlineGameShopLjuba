@@ -9,6 +9,7 @@ import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
+import Chat from '../../components/Chat/Chat';
 
 import './App.css';
 
@@ -293,7 +294,13 @@ class App extends Component {
 			    <h1 className="f1 b ma5 pa5 tc red grow" style={{textShadow: 'gray 2px 0 10px'}}>
 			    	!UNKNOWN ROUTE!
 			    </h1>
-		      }
+			  }
+			  <div>
+			  {
+				  (route === 'register' || route === 'signin') ?
+				  <div></div> : <Chat/>
+			  }
+			  </div>
 		      <div className="ma1 pa1" style={{fontSize:'10px', height: "20px", display: 'flex', justifyContent: 'center'}}>
 				  <div className = "bg-black" style={{display: 'flex', flexDirectino: 'row'}}>
 				  	<img src="/images/copyright.png" alt="c" style={{height: '7px'}}/> 
