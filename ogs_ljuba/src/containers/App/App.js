@@ -10,7 +10,7 @@ import ConfirmationButton from '../../components/Buttons/CartConfirmButton/Confi
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
 import Chat from '../../components/Chat/Chat';
-import ChatBox from '../../components/Chat/ChatBox';
+import ChatBox from '../ChatBox/ChatBox';
 import Notification from '../../components/Notifications/Notification';
 
 import './App.css';

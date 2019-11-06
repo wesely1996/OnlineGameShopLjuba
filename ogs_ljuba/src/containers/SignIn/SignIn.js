@@ -18,6 +18,12 @@ class SignIn extends React.Component {
 		this.setState({signInPassword: event.target.value});
 	}
 
+	onEnterPressInPassword = (event) => {
+		if(event.key === 'Enter'){
+			this.onSubmitSignIn();
+		}
+	}
+
 	onSubmitSignIn = () => {
 		fetch('http://localhost:3000/signin', {
 			method: 'post',
@@ -64,6 +70,7 @@ class SignIn extends React.Component {
 							<label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
 							<input 
 							onChange={this.onPasswordChange} 
+							onKeyPress={this.onEnterPressInPassword}
 							className="b pa2 input-reset ba bg-white hover-bg-gray hover-black w-100" 
 							type="password" 
 							name="password"  
