@@ -253,6 +253,20 @@ MongoClient.connect(url, (err, db) => {
           console.log(err);
       }
     )
+    
+    setTimeout(()=>{dbo.collection("Messages").find({ 'UserId': uId }).toArray((error1, result1) => {
+          if (error1)
+            throw error1;
+
+          let l=result[0].Messages.length;
+          if (result1[0]) {
+            res.json(result1[0].Messages[l-1].stat);
+          }
+          else {
+            console.log("No user found 179");
+          }
+        })},50)
+
   })
   /*Skin api*/
 
