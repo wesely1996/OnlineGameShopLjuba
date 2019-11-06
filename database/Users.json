@@ -1,1 +1,2 @@
 {"_id":{"$oid":"5dc048f8fb980f126172bdd0"},"name":"test1","email":"test@gmail.com","phone":"06064449898","hash":"30931699d4fdbc3836e918f01721b57d","cart":[]}
+{"_id":{"$oid":"5dc05e544aa7745b903fc5e0"},"name":"Nikola Veselinovic","email":"t@test.com","phone":"0646600821","hash":"098f6bcd4621d373cade4e832627b4f6","cart":[]}

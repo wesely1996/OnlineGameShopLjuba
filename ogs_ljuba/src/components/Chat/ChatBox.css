@@ -1,0 +1,7 @@
+.box{
+    width:5em;
+    height: 10em;
+    min-width: 3em;
+    min-height: 5em;
+    box-shadow: -0.1em -0.1em 0.1em gray;
+}
