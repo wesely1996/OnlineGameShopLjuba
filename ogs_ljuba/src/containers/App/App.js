@@ -9,7 +9,7 @@ import Registration from '../Registration/Registration';
 import ConfirmationButton from '../../components/Buttons/CartConfirmButton/ConfirmationButton';
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
-import Chat from '../../components/Chat/Chat';
+import Chat from '../../components/Buttons/ChatButton/ChatButton';
 import ChatBox from '../ChatBox/ChatBox';
 import Notification from '../../components/Notifications/Notification';
 
