@@ -241,7 +241,7 @@ MongoClient.connect(url, (err, db) => {
   /*Message api - userid | array of messages | unread message */
   app.put('/message' ,(req,res)=>{
     const {userId,message}=req.body;
-    const uId=ObejctId(userId);
+    const uId=ObjectId(userId);
     let stat = true;
     let isUser = true;
     dbo.collection("Messages").updateOne(
@@ -258,7 +258,7 @@ MongoClient.connect(url, (err, db) => {
           if (error1)
             throw error1;
 
-          let l=result[0].Messages.length;
+          let l=result1[0].Messages.length;
           if (result1[0]) {
             res.json(result1[0].Messages[l-1].stat);
           }
