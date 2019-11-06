@@ -40,7 +40,6 @@ class ChatBox extends React.Component {
           .then(status => {
               console.log(status);
           })
-          this.showNotification("Message Sent.")
       }
 
     render(){
