@@ -331,7 +331,7 @@ class App extends Component {
 				  	<div></div> : 
 				  	<div style={{display:'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
 						{
-							isChatOpen ? <ChatBox/> : <div></div>
+							isChatOpen ? <ChatBox userId={this.state.user.id}/> : <div></div>
 						}  
 						<Chat onAction={this.openCloseChatBox}/>
 					</div>

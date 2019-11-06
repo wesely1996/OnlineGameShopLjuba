@@ -12,18 +12,36 @@ class ChatBox extends React.Component {
             allMessages : {},
 		}
     }
+
+    changeMessage = (event) =>{
+        this.setState({message: event.target.value});
+    }
     
     SendMessageOnEnter = (event) => {
 		if(event.key === 'Enter'){
-			console.log("new message");
+			this.onMessageSend();
 		}
     }
     
-    SendMessage = (event) => {
-		if(event.key === 'Enter'){
-			console.log("new message");
-		}
+    SendMessage = () => {
+		this.onMessageSend();
     }
+
+    onMessageSend = (message) =>{
+        fetch('http://localhost:3000/message', {
+              method: 'put',
+              headers: {'Content-type':'application/json'},
+              body: JSON.stringify({
+                  userId: this.props.userId,
+                  message: message
+              })
+          })
+          .then(response => response.json())
+          .then(status => {
+              console.log(status);
+          })
+          this.showNotification("Message Sent.")
+      }
 
     render(){
         return (
@@ -40,6 +58,7 @@ class ChatBox extends React.Component {
                         className='f5 pa1 w-70 h-5 ba bg-white center bw1 b--black-20 white hover-bg-white hover-black'
                         type='sendMsg' 
                         placeholder='Enter new message'
+                        onChange = {this.changeMessage}
                         onKeyPress = {this.SendMessageOnEnter}/>
                         <button className='w-20'
                         onClick={this.SendMessage}
