@@ -28,11 +28,17 @@ MongoClient.connect(url, (err, db) => {
         users.insertOne(myUser, (err, result) => {
 		      if (err) throw err;
           console.log("1 document inserted (user)");
-          
-          let myOrders = {UserId: result.insertedId, Orders:[]}
+          //ordersdb
+          let myOrders = {UserId: result.insertedId, Orders:[]};
           dbo.collection("Orders").insertOne(myOrders,(err) => {
             if(err) throw err;
-            console.log("1 document inserted (orders")
+            console.log("1 document inserted (orders)")
+          })
+          //messagedb
+          let myMess= {UserId : result.insertedId, Messages:[]};
+          dbo.collection("Messages").insertOne(myMess,(err) => {
+            if(err) throw err;
+            console.log("1 document inserted (messages)")
           })
 
 		      res.status(201).json("User Created");
@@ -231,6 +237,24 @@ MongoClient.connect(url, (err, db) => {
       }
     })
   })
+
+  /*Message api - userid | array of messages | unread message */
+  app.put('/message' ,(req,res)=>{
+    const {userId,message}=req.body;
+    const uId=ObejctId(userId);
+    let stat = "new message";
+    dbo.collection("Messages").updateOne(
+     {"UserId": uId},
+     { $push: { "Messages" : {message , stat} } },
+     {multi: true,
+     useNewUrlParser: true}, 
+     (err)=>{
+          console.log(err);
+      }
+    )
+  })
+  /*Skin api*/
+
 });
 
 app.listen(3000, () => {
