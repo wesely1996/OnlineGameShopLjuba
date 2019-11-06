@@ -275,7 +275,7 @@ MongoClient.connect(url, (err, db) => {
     const uId=ObjectId(userId);
     dbo.collection("Messages").updateOne(
       {"UserId":uId},
-      {$set : { "Messages" : [] }}
+      {$set : { "Messages" : [] }},
       {multi: true,
       useNewUrlParser: true}, 
       (err)=>{
