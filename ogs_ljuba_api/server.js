@@ -268,6 +268,22 @@ MongoClient.connect(url, (err, db) => {
         })},50)
 
   })
+
+  //remove messages api - userId
+  app.pull('/removeMessages',(req,res)=>{
+    const{userId}=req.body;
+    const uId=ObjectId(userId);
+    dbo.collection("Messages").updateOne(
+      {"UserId":uId},
+      {$set : { "Messages" : [] }}
+      {multi: true,
+      useNewUrlParser: true}, 
+      (err)=>{
+          console.log(err);
+      }
+    )
+  })
+
   /*Skin api*/
 
 });
