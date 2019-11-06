@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Chat = () =>{
+const Chat = ({onAction}) =>{
 	return (
         <button className = "b-100 mt0 bg-transparent bn grow" 
+        onClick={()=>onAction()}
         style={{position: 'absolute', bottom: '0.3em', right:'1em', maxWidth: '5.5%',
                 marginBottom:'1em', marginRight:'1em', zIndex: 500}}>
             <img 

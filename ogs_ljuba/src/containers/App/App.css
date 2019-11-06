@@ -22,3 +22,11 @@
 .App-link {
   color: red;
 }
+
+button:active {
+  outline:0;
+}
+
+button:focus {
+  outline:0;
+}

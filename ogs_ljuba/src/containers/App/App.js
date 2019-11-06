@@ -10,6 +10,7 @@ import ConfirmationButton from '../../components/Buttons/CartConfirmButton/Confi
 import OrderHolder from '../../components/Holders/OrderHolder';
 import ArrowButton from '../../components/Buttons/ArrowButtons/ArrowButton';
 import Chat from '../../components/Chat/Chat';
+import ChatBox from '../../components/Chat/ChatBox';
 import Notification from '../../components/Notifications/Notification';
 
 import './App.css';
@@ -26,6 +27,7 @@ class App extends Component {
 			page: '',
 			notification: false,
 			massage: "",
+			isChatOpen: false,
 			user: {
 				id: {},
 				name: '',
@@ -127,7 +129,7 @@ class App extends Component {
 	}
 
 	waitFunc = (func) =>{
-		setTimeout(()=>{func()}, 1500);
+		setTimeout(()=>{func()}, 1000);
 	}
 
 	//route manager
@@ -207,8 +209,13 @@ class App extends Component {
 		return price;
 	}
 
+	openCloseChatBox = () =>{
+		if(this.state.isChatOpen) this.setState({isChatOpen: false});
+		else this.setState({isChatOpen: true});
+	}
+
 	render(){
-		const {games, searchfield, height, route, isSignedIn, user, page, notification, massage} = this.state;
+		const {games, searchfield, height, route, isSignedIn, isChatOpen, user, page, notification, massage} = this.state;
 
 		const filteredGames = games.filter(game =>{
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
@@ -320,8 +327,14 @@ class App extends Component {
 			  }
 			  <div>
 			  {
-				  (route === 'register' || route === 'signin') ?
-				  <div></div> : <Chat/>
+				  	(route === 'register' || route === 'signin') ?
+				  	<div></div> : 
+				  	<div style={{display:'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+						{
+							isChatOpen ? <ChatBox/> : <div></div>
+						}  
+						<Chat onAction={this.openCloseChatBox}/>
+					</div>
 			  }
 			  </div>
 		      <div className="ma1 pa1" style={{fontSize:'10px', height: "20px", display: 'flex', justifyContent: 'center'}}>
