@@ -242,10 +242,11 @@ MongoClient.connect(url, (err, db) => {
   app.put('/message' ,(req,res)=>{
     const {userId,message}=req.body;
     const uId=ObejctId(userId);
-    let stat = "new message";
+    let stat = true;
+    let isUser = true;
     dbo.collection("Messages").updateOne(
      {"UserId": uId},
-     { $push: { "Messages" : {message , stat} } },
+     { $push: { "Messages" : {message , stat, isUser} } },
      {multi: true,
      useNewUrlParser: true}, 
      (err)=>{
