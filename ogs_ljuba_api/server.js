@@ -242,17 +242,48 @@ MongoClient.connect(url, (err, db) => {
   app.put('/message' ,(req,res)=>{
     const {userId,message}=req.body;
     const uId=ObejctId(userId);
-    let stat = "new message";
+    let stat = true;
+    let isUser = true;
     dbo.collection("Messages").updateOne(
      {"UserId": uId},
-     { $push: { "Messages" : {message , stat} } },
+     { $push: { "Messages" : {message , stat, isUser} } },
      {multi: true,
      useNewUrlParser: true}, 
      (err)=>{
           console.log(err);
       }
     )
+    
+    setTimeout(()=>{dbo.collection("Messages").find({ 'UserId': uId }).toArray((error1, result1) => {
+          if (error1)
+            throw error1;
+
+          let l=result[0].Messages.length;
+          if (result1[0]) {
+            res.json(result1[0].Messages[l-1].stat);
+          }
+          else {
+            console.log("No user found 179");
+          }
+        })},50)
+
   })
+
+  //remove messages api - userId
+  app.pull('/removeMessages',(req,res)=>{
+    const{userId}=req.body;
+    const uId=ObjectId(userId);
+    dbo.collection("Messages").updateOne(
+      {"UserId":uId},
+      {$set : { "Messages" : [] }}
+      {multi: true,
+      useNewUrlParser: true}, 
+      (err)=>{
+          console.log(err);
+      }
+    )
+  })
+
   /*Skin api*/
 
 });
