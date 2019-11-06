@@ -27,13 +27,13 @@ class ChatBox extends React.Component {
 		this.onMessageSend();
     }
 
-    onMessageSend = (message) =>{
+    onMessageSend = () =>{
         fetch('http://localhost:3000/message', {
               method: 'put',
               headers: {'Content-type':'application/json'},
               body: JSON.stringify({
                   userId: this.props.userId,
-                  message: message
+                  message: this.state.message
               })
           })
           .then(response => response.json())
