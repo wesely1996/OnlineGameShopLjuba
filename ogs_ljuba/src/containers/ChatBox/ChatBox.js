@@ -55,8 +55,19 @@ class ChatBox extends React.Component {
     }
 
     loadMessages = () =>{
-        console.log(this.props.userId);
-        console.log(this.state.allMessages)
+        fetch('http://localhost:3000/getAllMessages', {
+              method: 'get',
+              headers: {'Content-type':'application/json'},
+              body: JSON.stringify({
+                  userId: this.props.userId
+              })
+          })
+          .then(response => response.json())
+          .then(Messages => {
+              if(Messages){
+                  this.setState({allMessages: Messages})
+              }
+          })
     }
 
     changeMessage = (event) =>{
@@ -83,14 +94,18 @@ class ChatBox extends React.Component {
               })
           })
           .then(response => response.json())
-          .then(status => {
-              console.log(status);
+          .then(stat => {
+              if(stat){
+                  this.setState({message: '',allMessages: this.state.allMessages.push(message)})
+              }
           })
       }
 
     render(){
 
         const {allMessages} = this.state;
+
+        //this.loadMessages();
 
         return (
             <div className = "b-100 mt0 bg-transparent bn"

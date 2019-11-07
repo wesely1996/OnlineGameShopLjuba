@@ -284,6 +284,11 @@ MongoClient.connect(url, (err, db) => {
     )
   })
 
+  /*TODO - GET /getAllMessages 
+  send: userId
+  return: Messages
+  */
+
   /*Skin api*/
 
 });
