@@ -1,12 +1,19 @@
 import React from 'react';
-//import Message from '../Message/Message';
+import Message from '../Message/Message';
 
-const MessageHolder = ({Messages}) => {
+const MessageHolder = ({messages}) => {
 
 	return (
-        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
 			{
-				
+				messages.map((msg, id) => {
+					return (
+						<Message 
+						key={id} 
+						message={msg.message} 
+						sender={msg.isUser}/>
+					)
+				})
 			}
 		</div>
 	);

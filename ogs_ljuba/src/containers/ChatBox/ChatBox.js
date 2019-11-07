@@ -9,8 +9,54 @@ class ChatBox extends React.Component {
 		super(props);
 		this.state = {
             message : '',
-            allMessages : {},
+            allMessages : [
+                {
+                    message:"Ovde ide poruka",
+                    stat: false, 
+                    isUser: true
+                },
+                {
+                    message:"Ovde ide poruka",
+                    stat: false, 
+                    isUser: true
+                },
+                {
+                    message:"Neke poruke su drugacije od ostalih",
+                    stat: false, 
+                    isUser: false
+                },
+                {
+                    message:"Ovde ide poruka",
+                    stat: false, 
+                    isUser: true
+                },
+                {
+                    message:"Neke poruke su drugacije od ostalih",
+                    stat: false, 
+                    isUser: false
+                },
+                {
+                    message:"Ovde ide poruka",
+                    stat: false, 
+                    isUser: true
+                },
+                {
+                    message:"U svrhe testiranja neke poruke su unikatne :)",
+                    stat: false, 
+                    isUser: true
+                },
+                {
+                    message:"Ovde ide poruka",
+                    stat: true, 
+                    isUser: false
+                },
+            ],
 		}
+    }
+
+    loadMessages = () =>{
+        console.log(this.props.userId);
+        console.log(this.state.allMessages)
     }
 
     changeMessage = (event) =>{
@@ -43,14 +89,17 @@ class ChatBox extends React.Component {
       }
 
     render(){
+
+        const {allMessages} = this.state;
+
         return (
             <div className = "b-100 mt0 bg-transparent bn"
             style={{position: 'absolute', bottom: '1.6em ', width:'25%', minWidth:'300px',
-                    minHeight: '200px',marginBottom:'1em', marginRight:'1em', zIndex: 250}}>
+                    Height: '26em', maxHeight:'70%',marginBottom:'1em', marginRight:'1em', zIndex: 250}}>
                 <div className='white bg-black box'
                 style={{display: 'flex', flexDirection:'column', justifyContent:'flex-end', width:'100%'}}>
                     <ChatScroll>
-                        <MessageHolder messages={this.state.allMessages}/>
+                        <MessageHolder messages={allMessages}/>
                     </ChatScroll>
                     <div className='br4 ma2'>
                         <input 
