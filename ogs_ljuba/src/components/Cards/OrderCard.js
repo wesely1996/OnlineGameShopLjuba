@@ -11,9 +11,9 @@ class OrderCard extends React.Component{
             >
 				<div style={{display: 'flex', flexDirection: 'column'}}>
 				{
-					orderNameAndNumber.map(order => {
+					orderNameAndNumber.map((order,id) => {
 						return(
-							<div className="b-white b-solid">
+							<div className="b-white b-solid" key={id}>
 								<div>Game name:		{order[0]} x{order[1]}</div>
 							</div>
 						)

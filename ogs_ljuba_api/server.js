@@ -260,7 +260,7 @@ MongoClient.connect(url, (err, db) => {
 
           let l=result1[0].Messages.length;
           if (result1[0]) {
-            res.json(result1[0].Messages[l-1].stat);
+            res.json(result1[0].Messages);
           }
           else {
             console.log("No user found 179");
@@ -285,7 +285,7 @@ MongoClient.connect(url, (err, db) => {
   })
 
   /*getAllMessages- send: userId, return: Messages*/
-  app.get('/getMessages',(req,res)=>{
+  app.post('/getAllMessages',(req,res)=>{
     const{userId}=req.body;
     const uId=ObjectId(userId);
     dbo.collection("Messages").find({"UserId":uId}).toArray((err,result)=>{
