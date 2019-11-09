@@ -96,7 +96,7 @@ class ChatBox extends React.Component {
           .then(response => response.json())
           .then(stat => {
               if(stat){
-                  this.setState({message: '',allMessages: this.state.allMessages.push(message)})
+                  this.setState({message: '',allMessages: this.state.allMessages.push(this.state.message)})
               }
           })
       }
