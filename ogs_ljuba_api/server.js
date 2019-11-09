@@ -284,10 +284,19 @@ MongoClient.connect(url, (err, db) => {
     )
   })
 
-  /*TODO - GET /getAllMessages 
-  send: userId
-  return: Messages
-  */
+  /*getAllMessages- send: userId, return: Messages*/
+  app.get('/getMessages',(req,res)=>{
+    const{userId}=req.body;
+    const uId=ObjectId(userId);
+    dbo.collection("Messages").find({"UserId":uId}).toArray((err,result)=>{
+      if(err) throw err;
+      let c=Object.keys(result).length;
+      if(c==1){
+        res.json(result[0].Messages);
+      }
+    })
+  })
+  
 
   /*Skin api*/
 
