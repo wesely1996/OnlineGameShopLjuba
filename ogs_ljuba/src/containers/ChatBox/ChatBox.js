@@ -89,12 +89,13 @@ class ChatBox extends React.Component {
                     <div className='br4 ma1'>
                         <input 
                         className='f5 pa1 w-70 h-5 ba bg-white center bw1 b--black-20 white hover-bg-white hover-black'
+                        style={{height:'23px'}}
                         type='sendMsg' 
                         placeholder='Enter new message'
                         value={this.state.message}
                         onChange = {this.changeMessage}
                         onKeyPress = {this.SendMessageOnEnter}/>
-                        <button className='w-20'
+                        <button className='w-20' style={{height:'35px'}}
                         onClick={this.SendMessage}
                         >
                             Send
