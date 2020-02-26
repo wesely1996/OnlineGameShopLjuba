@@ -337,7 +337,7 @@ class App extends Component {
 					</div>
 			  }
 			  </div>
-		      <div className="ma1 pa1" style={{fontSize:'10px', height: "20px", display: 'flex', justifyContent: 'center'}}>
+		      <div className="ma1 pa1" style={{fontSize:'10px', height: "20px", display: 'flex', justifyContent: 'center', position: 'fixed'}}>
 				  <div className = "bg-black" style={{display: 'flex', flexDirectino: 'row'}}>
 				  	<img src="/images/copyright.png" alt="c" style={{height: '7px'}}/> 
 		      		<div className="white">Copyright 2019 <span className="red b"> N&T</span></div>
