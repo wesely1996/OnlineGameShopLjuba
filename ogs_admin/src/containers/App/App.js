@@ -29,6 +29,10 @@ class App extends Component {
 		})
 	}
 
+	componentDidMount(){
+		this.getGames();
+	}
+
 	//route manager
 	onRouteChange = (route) => {
 		this.setState({route: route});
