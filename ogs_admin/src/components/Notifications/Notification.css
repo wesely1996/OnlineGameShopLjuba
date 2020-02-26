@@ -1,0 +1,7 @@
+.notification{
+    max-width: 40%;
+    min-width: 300px;
+    box-shadow: 0.2em 0.2em 0.2em rgb(180, 180, 180);
+    text-shadow: -0.05em -0.05em 0.3em gray;
+    /*text-shadow: 0.1em 0.1em 0.2em black, 0 0 1em red, 0 0 0.2em darkred;*/
+}
