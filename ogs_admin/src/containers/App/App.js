@@ -4,16 +4,33 @@ import './App.css';
 import Games from '../../components/Games/Games';
 import Search from '../../components/Search/Search';
 import Scroll from '../../components/Scroll/Scroll';
+import Orders from '../../components/Orders/Orders';
 
 class App extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			route: 'games',
+			route: 'orders',
 			searchfield: '',
 			games: [],
+			//TODO-povezi sa funkcijom koja ce da ucitava users
 			users: [],
-			orders: [],
+			//TODO-povezi sa funkcijom koja ce da ucitava orders
+			orders: [
+				{"_id":"5dc32b19c70608121d30b67f",
+				"UserId":"5dc32b19c70608121d30b67e",
+				"Orders":[{"order":[{"orderId":"5da32eb68908133a20bff162","num":{"$numberInt":"1"}}],"stat":"pending"},
+					{"order":[{"orderId":"5da32c558908133a20bff159","num":{"$numberInt":"1"}},
+					{"orderId":"5da32c8f8908133a20bff15a","num":{"$numberInt":"1"}}],"stat":"pending"},
+					{"order":[{"orderId":"5da32c098908133a20bff158","num":{"$numberInt":"1"}},
+					{"orderId":"5da32c558908133a20bff159","num":{"$numberInt":"1"}},
+					{"orderId":"5da32c8f8908133a20bff15a","num":{"$numberInt":"1"}}],"stat":"pending"},
+					{"order":[{"orderId":"5da32c8f8908133a20bff15a","num":{"$numberInt":"2"}}],"stat":"pending"},
+					{"order":[{"orderId":"5da32c8f8908133a20bff15a","num":{"$numberInt":"1"}},
+					{"orderId":"5da32c558908133a20bff159","num":{"$numberInt":"1"}},
+					{"orderId":"5da32c098908133a20bff158","num":{"$numberInt":"2"}}],"stat":"pending"}
+				]},
+			],
 		};
 	}
 
@@ -42,6 +59,18 @@ class App extends Component {
 		this.setState({searchfield: event.target.value});
 	}
 
+	deleteGame = (id) => {
+		console.log("delete " + id);
+	}
+
+	editGame = (id) => {
+		console.log("edit " + id);
+	}
+
+	createGame = () =>{
+		console.log("new game");
+	}
+
 	render(){
 		const {route, games, searchfield, users, orders} = this.state;
 
@@ -49,18 +78,28 @@ class App extends Component {
 			return game.gameName.toLowerCase().includes(searchfield.toLowerCase());
 		})
 
+		const filterOrders = orders.filter(order => {
+			return order.UserId.toLowerCase().includes(searchfield.toLowerCase());
+		})
+
 		return (
 			<div className="App" style={{width: null, height: null}}>
 				<Main onRouteChange={this.onRouteChange}/>
 		    	{
 					route === "orders" ? 
-						<div className="f1 white">orders</div>
+					<div>
+						<Search searchChange={this.onSearchChange}/>
+						<Scroll>
+							<Orders FilteredOrders={filterOrders}/>
+						</Scroll>
+					</div>
 					:
 					route === "games" ? 
 					<div>
 						<Search searchChange={this.onSearchChange}/>
 						<Scroll>
-							<Games FilteredGames={filteredGames}/>
+							<Games FilteredGames={filteredGames} DeleteGame={this.deleteGame}
+							EditGame={this.editGame} CreateGame={this.createGame}/>
 						</Scroll>
 					</div>
 					:

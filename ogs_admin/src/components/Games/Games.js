@@ -1,7 +1,7 @@
 import React from 'react';
 import GameCard from './GameCard';
 
-const Games = ({FilteredGames}) => {
+const Games = ({FilteredGames, DeleteGame, EditGame, CreateGame}) => {
 	return (
 		<div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
 			{
@@ -13,6 +13,9 @@ const Games = ({FilteredGames}) => {
 						imageLink={game.imageLink} 
 						gameName = {game.gameName} 
 						price = {game.price}
+						DeleteGame={DeleteGame}
+						EditGame = {EditGame}
+						CreateGame = {CreateGame}
 						/>
 					);
 				})
